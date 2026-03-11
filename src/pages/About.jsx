@@ -23,7 +23,7 @@ export default function About() {
               We are a small professional painting and decorating business based in Bedfordshire, covering North London, West London and North West London, as well as Middlesex and the Hertfordshire areas.
             </p>
             <p>
-              With 8 years of experience in the trade, B Joseph Decorators are highly capable and conscientious, and willing to undertake any decorating work — from paper hanging to external painting, plastering and coving. Whether you need interior or exterior decorating, we are always available to offer helpful advice on colours or materials, or to provide free quotes and estimates.
+              With many years of experience in the trade, B Joseph Decorators are highly capable and conscientious, and willing to undertake any decorating work — from paper hanging to external painting, plastering and coving. Whether you need interior or exterior decorating, we are always available to offer helpful advice on colours or materials, or to provide free quotes and estimates.
             </p>
             <p>
               We are a highly skilled professional company. Our attention to detail ensures we pride ourselves in providing a high standard of workmanship and quality service to all our customers, regardless of the size of the job. Customer satisfaction is our priority. We are members of the Painting and Decorating Association, have full public liability insurance, and are vetted and approved by TrustATrader.
