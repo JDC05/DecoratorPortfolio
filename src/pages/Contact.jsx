@@ -97,7 +97,7 @@ export default function Contact() {
             <div className="mt-10 bg-navy-mid rounded-xl p-5 border border-white/10">
               <p className="text-accent font-semibold mb-2">Address</p>
               <address className="not-italic text-white/70 text-sm leading-relaxed">
-                B Joseph Decorators Ltd<br />
+                B Joseph Decorators<br />
                 44 Chester Avenue<br />
                 Luton<br />
                 LU4 9SQ
