@@ -58,19 +58,20 @@ export default function About() {
           <div className="lg:col-span-5 space-y-8 lg:pt-14">
             <div className="border-l-2 border-copper pl-6">
               <h3 className="font-heading text-xl font-semibold text-ink mb-3">
-                Timber Window Restoration
+                Specialists in Timber Window Restoration
               </h3>
               <p className="text-ink-mid text-sm leading-relaxed">
-                Instead of replacing original wooden windows — often at significant cost — we use the industry-leading Repair Care system to restore them to their former glory. This advanced, sustainable method preserves the character of your property while delivering a long-lasting, high-quality finish, extending maintenance cycles from 3–5 years to 7–10 years.
+                Instead of replacing original wooden window, often at significant cost, we use the industry‑leading Repair Care system to restore them to their former glory. This advanced, sustainable method preserves the character of your property while delivering a long‑lasting, high‑quality finish.
               </p>
             </div>
             <div className="border-l-2 border-parchment-border pl-6">
               <h3 className="font-heading text-xl font-semibold text-ink mb-3">
-                Clear Communication
+                Clear Communication, Every Step of the Way
               </h3>
               <p className="text-ink-mid text-sm leading-relaxed">
-                We believe great service is built on transparency. Throughout your project, we keep you informed, ensure your requirements are fully understood, and discuss any additional work before proceeding. Every client receives a detailed written quotation as standard.
+                We believe great service is built on transparency. Throughout your project, we keep you informed, ensure your requirements are fully understood, and discuss any additional work before proceeding.
               </p>
+              <p className="text-ink-mid text-sm leading-relaxed mt-2">Every client receives a detailed written quotation as standard.</p>
             </div>
           </div>
         </div>
@@ -88,7 +89,7 @@ export default function About() {
                 A service you<br /><span className="italic">can rely on.</span>
               </h2>
               <p className="text-ink-mid mb-10 leading-relaxed">
-                At B Joseph Decorators, customer service is at the heart of everything we do. We offer honest, practical advice — from paint selection to repair techniques — ensuring you achieve the best possible results and value.
+                At B Joseph Decorators, customer service is at the heart of everything we do. We offer honest, practical advice, from paint selection to repair techniques, ensuring you achieve the best possible results and value.
               </p>
               <ul className="space-y-5">
                 {promises.map((item, i) => (
@@ -134,7 +135,7 @@ export default function About() {
                         Repair Care International
                       </a>
                       <p className="text-ink-mid text-sm leading-relaxed">
-                        Specialist Window Care Systems — eco-friendly, cost-effective exterior woodwork restoration that extends maintenance cycles significantly.
+                        We use Repair Care International’s Window Care Systems to restore damaged exterior woodwork, allowing homeowners to retain original windows, doors, and timber features. This eco‑friendly, cost‑effective approach extends maintenance cycles from 3–5 years to 7–10 years.
                       </p>
                     </div>
                   </div>

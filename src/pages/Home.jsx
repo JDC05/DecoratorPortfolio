@@ -175,21 +175,6 @@ function ServicesShowcase() {
           </div>
         </div>
 
-        {/* Scrolling service ticker */}
-        <div className="mt-6 overflow-hidden border border-parchment-border py-3 bg-parchment-dark">
-          <div className="ticker-track flex gap-12 whitespace-nowrap" style={{ animation: 'ticker 30s linear infinite' }}>
-            {[...serviceGroups.flatMap(g => g.items), ...serviceGroups.flatMap(g => g.items)].map((item, i) => (
-              <span
-                key={i}
-                className="shrink-0 text-slate"
-                style={{ fontSize: '0.68rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
-              >
-                {item}
-                <span className="ml-12 text-copper/40">·</span>
-              </span>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   )
