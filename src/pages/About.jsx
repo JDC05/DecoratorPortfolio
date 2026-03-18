@@ -15,14 +15,14 @@ export default function About() {
       {/* ── Hero ── */}
       <section className="bg-parchment-dark border-b border-parchment-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
-          <p className="section-label mb-4">Who We Are</p>
+          <p className="section-label mb-4 animate-fade-up">Who We Are</p>
           <h1
-            className="font-heading font-semibold text-ink leading-[0.9]"
+            className="font-heading font-semibold text-ink leading-[0.9] animate-fade-up anim-d1"
             style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
           >
             About <span className="italic">B.Joseph</span> Decorators
           </h1>
-          <div className="copper-rule mt-5" />
+          <div className="copper-rule mt-5 animate-fade-up anim-d2" />
         </div>
       </section>
 

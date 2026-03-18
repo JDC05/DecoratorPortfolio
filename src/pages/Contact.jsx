@@ -52,15 +52,15 @@ export default function Contact() {
       {/* ── Hero ── */}
       <section className="bg-parchment-dark border-b border-parchment-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
-          <p className="section-label mb-4">Get In Touch</p>
+          <p className="section-label mb-4 animate-fade-up">Get In Touch</p>
           <h1
-            className="font-heading font-semibold text-ink leading-[0.9]"
+            className="font-heading font-semibold text-ink leading-[0.9] animate-fade-up anim-d1"
             style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
           >
             Contact <span className="italic">Us</span>
           </h1>
-          <div className="copper-rule mt-5 mb-4" />
-          <p className="text-ink-mid max-w-xl">
+          <div className="copper-rule mt-5 mb-4 animate-fade-up anim-d2" />
+          <p className="text-ink-mid max-w-xl animate-fade-up anim-d3">
             Have a project in mind? Get in touch for a free, no-obligation quote and we'll get back to you as soon as possible.
           </p>
         </div>

@@ -55,15 +55,15 @@ export default function Coverage() {
       {/* ── Hero ── */}
       <section className="bg-parchment-dark border-b border-parchment-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
-          <p className="section-label mb-4">Where We Work</p>
+          <p className="section-label mb-4 animate-fade-up">Where We Work</p>
           <h1
-            className="font-heading font-semibold text-ink leading-[0.9]"
+            className="font-heading font-semibold text-ink leading-[0.9] animate-fade-up anim-d1"
             style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
           >
             Coverage <span className="italic">Area</span>
           </h1>
-          <div className="copper-rule mt-5 mb-4" />
-          <p className="text-ink-mid max-w-xl">
+          <div className="copper-rule mt-5 mb-4 animate-fade-up anim-d2" />
+          <p className="text-ink-mid max-w-xl animate-fade-up anim-d3">
             We provide professional decorating services across Bedfordshire and the surrounding areas. Don't see your town listed? Get in touch — we may still be able to help.
           </p>
         </div>

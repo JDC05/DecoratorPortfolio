@@ -93,15 +93,15 @@ export default function Gallery() {
       {/* ── Hero ── */}
       <section className="bg-parchment-dark border-b border-parchment-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
-          <p className="section-label mb-4">Our Projects</p>
+          <p className="section-label mb-4 animate-fade-up">Our Projects</p>
           <h1
-            className="font-heading font-semibold text-ink leading-[0.9]"
+            className="font-heading font-semibold text-ink leading-[0.9] animate-fade-up anim-d1"
             style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
           >
             Gallery
           </h1>
-          <div className="copper-rule mt-5 mb-4" />
-          <p className="text-ink-mid max-w-xl">
+          <div className="copper-rule mt-5 mb-4 animate-fade-up anim-d2" />
+          <p className="text-ink-mid max-w-xl animate-fade-up anim-d3">
             A selection of our recent work — interior, exterior, flooring and building projects across Bedfordshire and London.
           </p>
         </div>
@@ -168,7 +168,7 @@ export default function Gallery() {
             ×
           </button>
           <button
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
             style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
             onClick={(e) => { e.stopPropagation(); prev() }}
             aria-label="Previous"
@@ -201,7 +201,7 @@ export default function Gallery() {
           </div>
 
           <button
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
             style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
             onClick={(e) => { e.stopPropagation(); next() }}
             aria-label="Next"
