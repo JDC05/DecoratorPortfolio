@@ -1,48 +1,35 @@
 import { useState } from 'react'
 
 /**
- * This form uses Formspree for email delivery.
- * Steps to activate:
- *   1. Go to https://formspree.io and create a free account
- *   2. Create a new form and copy your form ID (e.g. "xpwdqvvn")
- *   3. Replace YOUR_FORMSPREE_ID below with your form ID
+ * This form uses Web3Forms for email delivery — no account required.
+ * Steps to activate (takes ~2 minutes):
+ *   1. Go to https://web3forms.com
+ *   2. Enter the email address you want submissions sent to
+ *   3. Check your inbox and copy the access key from the confirmation email
+ *   4. Replace YOUR_WEB3FORMS_ACCESS_KEY below with that key
  */
-const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'
+const WEB3FORMS_KEY = '7ee0e48f-9dfa-4af8-9675-68f72cb7bf45'
 
 const contactDetails = [
-  {
-    icon: '📞',
-    label: 'Phone',
-    value: '07793 074 516',
-    href: 'tel:07793074516',
-  },
-  {
-    icon: '✉️',
-    label: 'Email',
-    value: 'info@bjosephdecorators.co.uk',
-    href: 'mailto:info@bjosephdecorators.co.uk',
-  },
+  { label: 'Phone', value: '07793 074 516', href: 'tel:07793074516' },
+  { label: 'Email', value: 'info@bjosephdecorators.co.uk', href: 'mailto:info@bjosephdecorators.co.uk' },
 ]
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' })
   const [status, setStatus] = useState('idle') // idle | sending | success | error
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('sending')
-
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ access_key: WEB3FORMS_KEY, ...form }),
       })
-
       if (res.ok) {
         setStatus('success')
         setForm({ name: '', phone: '', email: '', message: '' })
@@ -55,80 +42,95 @@ export default function Contact() {
   }
 
   const inputClass =
-    'w-full bg-navy border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-accent transition-colors duration-200'
+    'w-full bg-transparent border-0 border-b border-parchment-border focus:border-copper focus:outline-none transition-colors duration-200 py-3 text-ink placeholder-slate text-sm'
+
+  const labelClass =
+    'block text-slate mb-1.5'
 
   return (
     <>
-      {/* Page hero */}
-      <section className="bg-navy-mid border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-accent font-semibold uppercase tracking-widest text-sm mb-3">Get In Touch</p>
-          <h1 className="section-title">Contact Us</h1>
-          <div className="section-divider" />
-          <p className="text-white/60 max-w-xl">
+      {/* ── Hero ── */}
+      <section className="bg-parchment-dark border-b border-parchment-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
+          <p className="section-label mb-4">Get In Touch</p>
+          <h1
+            className="font-heading font-semibold text-ink leading-[0.9]"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+          >
+            Contact <span className="italic">Us</span>
+          </h1>
+          <div className="copper-rule mt-5 mb-4" />
+          <p className="text-ink-mid max-w-xl">
             Have a project in mind? Get in touch for a free, no-obligation quote and we'll get back to you as soon as possible.
           </p>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
 
-          {/* Contact info */}
-          <div className="lg:col-span-1">
-            <h2 className="font-heading text-2xl font-bold text-white mb-6">Contact Details</h2>
-            <div className="space-y-6">
+          {/* Contact details sidebar */}
+          <div>
+            <p className="section-label mb-8">Details</p>
+            <div className="space-y-8">
               {contactDetails.map((c) => (
-                <div key={c.label} className="flex items-start gap-4">
-                  <span className="text-2xl">{c.icon}</span>
-                  <div>
-                    <p className="text-white/50 text-sm">{c.label}</p>
-                    <a
-                      href={c.href}
-                      className="text-white hover:text-accent transition-colors duration-200 font-medium"
-                    >
-                      {c.value}
-                    </a>
-                  </div>
+                <div key={c.label}>
+                  <p
+                    className="text-slate mb-1.5"
+                    style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                  >
+                    {c.label}
+                  </p>
+                  <a
+                    href={c.href}
+                    className="font-heading text-xl font-semibold text-ink hover:text-copper transition-colors duration-200"
+                  >
+                    {c.value}
+                  </a>
                 </div>
               ))}
             </div>
 
-            <div className="mt-10 bg-navy-mid rounded-xl p-5 border border-white/10">
-              <p className="text-accent font-semibold mb-2">Address</p>
-              <address className="not-italic text-white/70 text-sm leading-relaxed">
+            <div className="mt-10 pt-10 border-t border-parchment-border">
+              <p
+                className="text-slate mb-3"
+                style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+              >
+                Address
+              </p>
+              <address className="not-italic text-ink-mid leading-relaxed font-heading text-lg">
                 B Joseph Decorators<br />
                 44 Chester Avenue<br />
-                Luton<br />
-                LU4 9SQ
+                Luton, LU4 9SQ
               </address>
             </div>
           </div>
 
           {/* Form */}
           <div className="lg:col-span-2">
-            <h2 className="font-heading text-2xl font-bold text-white mb-6">Send Us a Message</h2>
+            <p className="section-label mb-8">Send a Message</p>
 
             {status === 'success' ? (
-              <div className="bg-green-900/30 border border-green-500/30 rounded-xl p-8 text-center">
-                <div className="text-4xl mb-4">✅</div>
-                <h3 className="font-heading text-xl font-bold text-white mb-2">Message Sent!</h3>
-                <p className="text-white/60">
-                  Thanks for getting in touch. We'll get back to you as soon as possible.
+              <div className="border border-parchment-border p-12 text-center">
+                <div className="copper-rule mx-auto mb-8" />
+                <h3 className="font-heading text-3xl font-semibold text-ink mb-4">Message Sent</h3>
+                <p className="text-ink-mid mb-8 leading-relaxed">
+                  Thank you for getting in touch. We'll get back to you as soon as possible.
                 </p>
-                <button
-                  className="btn-accent mt-6"
-                  onClick={() => setStatus('idle')}
-                >
+                <button className="btn-ghost" onClick={() => setStatus('idle')}>
                   Send Another
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                   <div>
-                    <label className="block text-white/60 text-sm mb-1" htmlFor="name">
-                      Full Name <span className="text-accent">*</span>
+                    <label
+                      className={labelClass}
+                      htmlFor="name"
+                      style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                    >
+                      Full Name <span className="text-copper">*</span>
                     </label>
                     <input
                       id="name"
@@ -142,7 +144,11 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="block text-white/60 text-sm mb-1" htmlFor="phone">
+                    <label
+                      className={labelClass}
+                      htmlFor="phone"
+                      style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                    >
                       Phone Number
                     </label>
                     <input
@@ -158,8 +164,12 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-white/60 text-sm mb-1" htmlFor="email">
-                    Email Address <span className="text-accent">*</span>
+                  <label
+                    className={labelClass}
+                    htmlFor="email"
+                    style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                  >
+                    Email Address <span className="text-copper">*</span>
                   </label>
                   <input
                     id="email"
@@ -174,8 +184,12 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-white/60 text-sm mb-1" htmlFor="message">
-                    Message <span className="text-accent">*</span>
+                  <label
+                    className={labelClass}
+                    htmlFor="message"
+                    style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                  >
+                    Message <span className="text-copper">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -190,7 +204,7 @@ export default function Contact() {
                 </div>
 
                 {status === 'error' && (
-                  <p className="text-red-400 text-sm">
+                  <p className="text-copper text-sm">
                     Something went wrong. Please try again or call us directly.
                   </p>
                 )}
@@ -198,7 +212,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={status === 'sending'}
-                  className="btn-accent w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {status === 'sending' ? 'Sending…' : 'Send Message'}
                 </button>

@@ -4,28 +4,115 @@
 
 @layer base {
   body {
-    @apply bg-navy text-white font-sans;
+    @apply bg-parchment text-ink font-sans;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   }
 
   h1, h2, h3, h4 {
     @apply font-heading;
   }
+
+  a {
+    @apply transition-colors duration-200;
+  }
 }
 
 @layer components {
-  .btn-accent {
-    @apply bg-accent hover:bg-accent-hover text-white font-semibold px-6 py-3 rounded-md transition-colors duration-200;
+  .btn-primary {
+    @apply bg-copper hover:bg-copper-hover text-white font-medium transition-all duration-200 inline-block;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Jost', system-ui, sans-serif;
   }
 
+  .btn-ghost {
+    @apply border border-ink text-ink hover:bg-ink hover:text-parchment font-medium transition-all duration-200 inline-block;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Jost', system-ui, sans-serif;
+  }
+
+  /* Legacy aliases */
+  .btn-accent {
+    @apply btn-primary;
+  }
   .btn-outline {
-    @apply border-2 border-white hover:bg-white hover:text-navy text-white font-semibold px-6 py-3 rounded-md transition-colors duration-200;
+    @apply btn-ghost;
   }
 
   .section-title {
-    @apply font-heading text-3xl md:text-4xl font-bold mb-4;
+    @apply font-heading text-4xl md:text-5xl font-semibold leading-tight;
+  }
+
+  .section-label {
+    color: #C4622D;
+    font-family: 'Jost', system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .copper-rule {
+    @apply w-12 h-px bg-copper;
   }
 
   .section-divider {
-    @apply w-16 h-1 bg-accent mb-6;
+    @apply copper-rule;
   }
 }
+
+@layer utilities {
+  .link-copper {
+    @apply relative text-ink-mid hover:text-copper;
+  }
+
+  .link-copper::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-px bg-copper transition-all duration-300;
+  }
+
+  .link-copper:hover::after {
+    @apply w-full;
+  }
+}
+
+/* Entry animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.anim-d1 { animation-delay: 0.08s; opacity: 0; }
+.anim-d2 { animation-delay: 0.18s; opacity: 0; }
+.anim-d3 { animation-delay: 0.28s; opacity: 0; }
+.anim-d4 { animation-delay: 0.38s; opacity: 0; }
+.anim-d5 { animation-delay: 0.48s; opacity: 0; }

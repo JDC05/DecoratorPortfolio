@@ -11,7 +11,7 @@ const areas = [
   'Chaul End', 'Chawston', 'Chellington', 'Chicksands', 'Chiltern Green', 'Church End Arlesey',
   'Church End Totternhoe', 'Clapham', 'Clifton', 'Clipstone', 'Clophill', 'Cockayne Hatley',
   'Colesden', 'Colmworth', 'Cople', 'Cotton End', 'Cranfield', 'De Parys',
-  'Duck\'s Cross', 'Dunstable', 'Dunton', 'East Hyde', 'Eastcotts', 'Eaton Bray',
+  "Duck's Cross", 'Dunstable', 'Dunton', 'East Hyde', 'Eastcotts', 'Eaton Bray',
   'Edworth', 'Eggington', 'Elstow', 'Eversholt', 'Everton', 'Eyeworth',
   'Fancott', 'Farndish', 'Felmersham', 'Flitton', 'Flitwick', 'Goldington',
   'Gravenhurst', 'Great Barford', 'Great Billington', 'Great Denham', 'Greenfield', 'Hall End',
@@ -52,66 +52,77 @@ export default function Coverage() {
 
   return (
     <>
-      {/* Page hero */}
-      <section className="bg-navy-mid border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-accent font-semibold uppercase tracking-widest text-sm mb-3">Where We Work</p>
-          <h1 className="section-title">Coverage Area</h1>
-          <div className="section-divider" />
-          <p className="text-white/60 max-w-xl">
+      {/* ── Hero ── */}
+      <section className="bg-parchment-dark border-b border-parchment-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
+          <p className="section-label mb-4">Where We Work</p>
+          <h1
+            className="font-heading font-semibold text-ink leading-[0.9]"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+          >
+            Coverage <span className="italic">Area</span>
+          </h1>
+          <div className="copper-rule mt-5 mb-4" />
+          <p className="text-ink-mid max-w-xl">
             We provide professional decorating services across Bedfordshire and the surrounding areas. Don't see your town listed? Get in touch — we may still be able to help.
           </p>
         </div>
       </section>
 
-      {/* Areas */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 className="font-heading text-2xl font-bold text-white mb-2">Areas We Cover</h2>
-        <div className="section-divider mb-8" />
+      {/* ── Areas ── */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24">
 
-        <div className="relative max-w-sm mb-6">
-          <input
-            type="text"
-            placeholder="Search areas..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-navy-mid border border-white/10 rounded-lg px-4 py-2.5 pr-10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-accent/50"
-          />
-          {query && (
-            <button
-              onClick={() => setQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors"
-              aria-label="Clear search"
-            >
-              ✕
-            </button>
-          )}
+        {/* Header row */}
+        <div className="flex flex-col sm:flex-row sm:items-end gap-6 mb-12">
+          <div>
+            <p className="section-label mb-2">Areas We Cover</p>
+            <p className="text-slate text-sm">{areas.length} locations across Bedfordshire</p>
+          </div>
+          <div className="sm:ml-auto relative w-full sm:max-w-xs">
+            <input
+              type="text"
+              placeholder="Search areas…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full bg-transparent border-0 border-b border-parchment-border focus:border-copper focus:outline-none transition-colors duration-200 py-2.5 pr-8 text-ink placeholder-slate text-sm"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery('')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-slate hover:text-ink transition-colors"
+                aria-label="Clear search"
+                style={{ fontSize: '1.25rem', lineHeight: 1 }}
+              >
+                ×
+              </button>
+            )}
+          </div>
         </div>
 
         {filtered.length === 0 && (
-          <p className="text-white/40 text-sm mb-6">No areas found for "{query}".</p>
+          <p className="text-slate text-sm mb-8">No areas found for "{query}".</p>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+        {/* Areas grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5">
           {filtered.map((area) => (
             <div
               key={area}
-              className="flex items-center gap-2 bg-navy-mid rounded-lg px-3 py-2.5 border border-white/5 hover:border-accent/30 transition-colors duration-200"
+              className="flex items-center gap-2.5 px-3 py-2.5 border border-parchment-border hover:border-copper/40 hover:bg-copper-pale/20 transition-all duration-200"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-              <span className="text-white/80 text-sm truncate">{area}</span>
+              <span className="w-1 h-1 rounded-full bg-copper shrink-0" />
+              <span className="text-ink-mid text-sm truncate">{area}</span>
             </div>
           ))}
         </div>
 
-        <div className="mt-10 bg-navy-light rounded-xl p-5 border border-white/10 max-w-md mx-auto text-center">
-          <p className="text-accent font-semibold mb-1">Not on the list?</p>
-          <p className="text-white/60 text-sm mb-4">
+        {/* CTA */}
+        <div className="mt-16 border border-parchment-border p-10 max-w-md mx-auto text-center">
+          <p className="section-label mb-3">Not on the list?</p>
+          <p className="text-ink-mid text-sm mb-7 leading-relaxed">
             Our coverage is always expanding. Reach out and we'll let you know if we can come to you.
           </p>
-          <Link to="/contact" className="btn-accent text-sm">
-            Get in Touch
-          </Link>
+          <Link to="/contact" className="btn-primary">Get in Touch</Link>
         </div>
       </section>
     </>

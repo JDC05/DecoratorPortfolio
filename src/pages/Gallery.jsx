@@ -13,17 +13,10 @@ const images = Object.entries(modules).map(([path, module]) => {
 
 const categories = ['All', 'Interior', 'Exterior', 'Videos']
 
-const categoryLabels = {
-  All: 'All Work',
-  Interior: 'Interior',
-  Exterior: 'Exterior',
-  Videos: 'Videos',
-}
-
 function GalleryImage({ item, index, onClick }) {
   return (
     <div
-      className="relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer group border border-white/10"
+      className="relative overflow-hidden aspect-[4/3] cursor-pointer group border border-parchment-border hover:border-copper/40 transition-colors duration-300"
       onClick={() => onClick(index)}
     >
       {item.type === 'video' ? (
@@ -31,20 +24,24 @@ function GalleryImage({ item, index, onClick }) {
           src={item.src}
           muted
           playsInline
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       ) : (
         <img
           src={item.src}
           alt={item.caption}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       )}
       {item.type === 'video' && (
-        <span className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full pointer-events-none">
-          ▶ Video
+        <span
+          className="absolute top-3 right-3 bg-ink/70 text-parchment px-2.5 py-1 pointer-events-none"
+          style={{ fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+        >
+          Video
         </span>
       )}
+      <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/8 transition-colors duration-300" />
     </div>
   )
 }
@@ -64,12 +61,10 @@ export default function Gallery() {
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
 
-  // Reset count when category changes
   useEffect(() => {
     setVisibleCount(PAGE_SIZE)
   }, [activeCategory])
 
-  // Infinite scroll via IntersectionObserver
   const loadMore = useCallback(() => {
     setVisibleCount((c) => Math.min(c + PAGE_SIZE, filtered.length))
   }, [filtered.length])
@@ -95,76 +90,92 @@ export default function Gallery() {
 
   return (
     <>
-      {/* Page hero */}
-      <section className="bg-navy-mid border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-accent font-semibold uppercase tracking-widest text-sm mb-3">Our Projects</p>
-          <h1 className="section-title">Gallery</h1>
-          <div className="section-divider" />
-          <p className="text-white/60 max-w-xl">
+      {/* ── Hero ── */}
+      <section className="bg-parchment-dark border-b border-parchment-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10 md:py-12">
+          <p className="section-label mb-4">Our Projects</p>
+          <h1
+            className="font-heading font-semibold text-ink leading-[0.9]"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+          >
+            Gallery
+          </h1>
+          <div className="copper-rule mt-5 mb-4" />
+          <p className="text-ink-mid max-w-xl">
             A selection of our recent work — interior, exterior, flooring and building projects across Bedfordshire and London.
           </p>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
 
-        {/* Category filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-colors duration-200 border ${
-                activeCategory === cat
-                  ? 'bg-accent border-accent text-white'
-                  : 'bg-transparent border-white/20 text-white/60 hover:border-accent/50 hover:text-white'
-              }`}
-            >
-              {categoryLabels[cat]}
-              <span className="ml-2 text-xs opacity-70">
-                ({cat === 'All' ? images.length : images.filter(i => i.category === cat).length})
-              </span>
-            </button>
-          ))}
+        {/* Category tabs */}
+        <div className="flex flex-wrap gap-0 mb-12 border-b border-parchment-border">
+          {categories.map((cat) => {
+            const count = cat === 'All'
+              ? images.length
+              : cat === 'Videos'
+                ? images.filter(i => i.type === 'video').length
+                : images.filter(i => i.category === cat).length
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-3.5 transition-all duration-200 border-b-2 -mb-px ${
+                  activeCategory === cat
+                    ? 'border-copper text-copper'
+                    : 'border-transparent text-ink-mid hover:text-ink'
+                }`}
+                style={{ fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, system-ui, sans-serif' }}
+              >
+                {cat === 'All' ? 'All Work' : cat}
+                <span className="ml-2 opacity-40">({count})</span>
+              </button>
+            )
+          })}
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {visible.map((item, i) => (
             <GalleryImage key={`${item.src}-${i}`} item={item} index={i} onClick={openLightbox} />
           ))}
         </div>
 
-        {/* Sentinel for infinite scroll */}
         {hasMore && <div ref={sentinelRef} className="h-10" />}
 
-        {/* Item count */}
-        <p className="text-white/30 text-sm text-center mt-8">
-          Showing {visible.length} of {filtered.length} items
+        <p
+          className="text-center mt-10"
+          style={{ color: '#8B7D6B', fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+        >
+          Showing {visible.length} of {filtered.length}
         </p>
       </section>
 
-      {/* Lightbox */}
+      {/* ── Lightbox ── */}
       {lightbox !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(30,27,22,0.97)' }}
           onClick={closeLightbox}
         >
           <button
-            className="absolute top-4 right-4 text-white text-3xl hover:text-accent transition-colors"
+            className="absolute top-6 right-6 text-parchment/50 hover:text-copper transition-colors"
+            style={{ fontSize: '2rem', fontWeight: 300, lineHeight: 1 }}
             onClick={closeLightbox}
             aria-label="Close"
           >
-            ✕
+            ×
           </button>
           <button
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-accent transition-colors px-2"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2"
+            style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
             onClick={(e) => { e.stopPropagation(); prev() }}
             aria-label="Previous"
           >
             ‹
           </button>
+
           <div className="max-w-5xl max-h-[85vh] relative" onClick={(e) => e.stopPropagation()}>
             {filtered[lightbox].type === 'video' ? (
               <video
@@ -172,22 +183,26 @@ export default function Gallery() {
                 src={filtered[lightbox].src}
                 controls
                 autoPlay
-                className="max-h-[80vh] max-w-full rounded-xl"
+                className="max-h-[80vh] max-w-full"
               />
             ) : (
               <img
                 src={filtered[lightbox].src}
                 alt={filtered[lightbox].caption}
-                className="max-h-[80vh] max-w-full object-contain rounded-xl"
+                className="max-h-[80vh] max-w-full object-contain"
               />
             )}
-            <p className="text-white text-center mt-3 font-medium">{filtered[lightbox].caption}</p>
-            <p className="text-white/40 text-center text-sm mt-1">
+            <p
+              className="text-center mt-4"
+              style={{ color: 'rgba(244,239,230,0.4)', fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+            >
               {lightbox + 1} / {filtered.length}
             </p>
           </div>
+
           <button
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-accent transition-colors px-2"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2"
+            style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
             onClick={(e) => { e.stopPropagation(); next() }}
             aria-label="Next"
           >

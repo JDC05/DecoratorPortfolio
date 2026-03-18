@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const paintingServices = [
@@ -34,107 +35,351 @@ const additionalHomeServices = [
   'Handyman services',
 ]
 
+const serviceGroups = [
+  { number: '01', title: 'Painting & Decorating', items: paintingServices },
+  { number: '02', title: 'Building & Property', items: buildingServices },
+  { number: '03', title: 'Additional Home Services', items: additionalHomeServices },
+]
+
+function ServicesShowcase() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const group = serviceGroups[activeIndex]
+
+  return (
+    <section className="bg-parchment border-t border-parchment-border">
+      {/* Section header */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 md:pt-32 pb-12">
+        <div className="flex items-end gap-8">
+          <div>
+            <p className="section-label mb-3">What We Offer</p>
+            <h2 className="font-heading text-4xl md:text-5xl font-semibold text-ink">Our Services</h2>
+          </div>
+          <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
+        </div>
+      </div>
+
+      {/* Interactive panel */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-24 md:pb-32">
+        <div className="border border-parchment-border grid grid-cols-1 lg:grid-cols-5">
+
+          {/* Left: category selector */}
+          <div className="lg:col-span-2 border-b lg:border-b-0 lg:border-r border-parchment-border flex flex-col">
+            {serviceGroups.map(({ number, title, items }, i) => {
+              const isActive = activeIndex === i
+              return (
+                <button
+                  key={number}
+                  onClick={() => setActiveIndex(i)}
+                  className="text-left px-6 lg:px-10 py-5 lg:py-8 border-b border-parchment-border last:border-0 transition-colors duration-300 relative"
+                  style={{ backgroundColor: isActive ? '#EAE3D7' : 'transparent' }}
+                >
+                  {/* Active indicator bar — slides in from left */}
+                  <span
+                    className="absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300"
+                    style={{
+                      backgroundColor: '#C4622D',
+                      transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
+                      transformOrigin: 'left',
+                    }}
+                  />
+
+                  <p
+                    className="font-heading font-semibold leading-none transition-colors duration-300 hidden lg:block"
+                    style={{ fontSize: '3rem', color: isActive ? '#C4622D' : '#D6CCBA' }}
+                  >
+                    {number}
+                  </p>
+                  <div className="flex items-center gap-3 lg:mt-2">
+                    <span
+                      className="font-heading font-semibold shrink-0 lg:hidden"
+                      style={{ fontSize: '1rem', color: isActive ? '#C4622D' : '#D6CCBA' }}
+                    >
+                      {number}
+                    </span>
+                    <div>
+                      <p
+                        className="font-heading font-semibold transition-colors duration-200 text-base lg:text-xl leading-tight"
+                        style={{ color: isActive ? '#1E1B16' : '#4A4438' }}
+                      >
+                        {title}
+                      </p>
+                      <p
+                        className="mt-1 lg:hidden transition-colors duration-300"
+                        style={{
+                          fontSize: '0.65rem',
+                          letterSpacing: '0.12em',
+                          textTransform: 'uppercase',
+                          fontFamily: 'Jost, sans-serif',
+                          color: isActive ? '#C4622D' : '#8B7D6B',
+                        }}
+                      >
+                        {items.length} services
+                      </p>
+                    </div>
+                  </div>
+                  <p
+                    className="hidden lg:block mt-2 transition-colors duration-300"
+                    style={{
+                      fontSize: '0.68rem',
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      fontFamily: 'Jost, sans-serif',
+                      color: isActive ? '#C4622D' : '#8B7D6B',
+                    }}
+                  >
+                    {items.length} services
+                  </p>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Right: animated service list */}
+          <div className="lg:col-span-3 p-8 lg:p-12 xl:p-16 min-h-[24rem]">
+            {/* Panel header */}
+            <div className="flex items-baseline justify-between mb-8 pb-6 border-b border-parchment-border">
+              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-ink">
+                {group.title}
+              </h3>
+              <span
+                style={{
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  fontFamily: 'Jost, sans-serif',
+                  color: '#8B7D6B',
+                }}
+              >
+                {group.items.length} services
+              </span>
+            </div>
+
+            {/* Items — key forces remount → animation replay on category change */}
+            <ul key={activeIndex} className="space-y-0">
+              {group.items.map((item, i) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-5 py-3 border-b border-parchment-border last:border-0 animate-fade-up"
+                  style={{ animationDelay: `${i * 0.045}s`, opacity: 0 }}
+                >
+                  <span
+                    className="font-heading font-semibold shrink-0 tabular-nums"
+                    style={{ fontSize: '0.78rem', color: '#D6CCBA', width: '2rem', marginTop: '0.1rem' }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-ink-mid text-sm leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Scrolling service ticker */}
+        <div className="mt-6 overflow-hidden border border-parchment-border py-3 bg-parchment-dark">
+          <div className="ticker-track flex gap-12 whitespace-nowrap" style={{ animation: 'ticker 30s linear infinite' }}>
+            {[...serviceGroups.flatMap(g => g.items), ...serviceGroups.flatMap(g => g.items)].map((item, i) => (
+              <span
+                key={i}
+                className="shrink-0 text-slate"
+                style={{ fontSize: '0.68rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+              >
+                {item}
+                <span className="ml-12 text-copper/40">·</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-navy-mid overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy-mid to-navy-light opacity-90" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
-          <div className="max-w-3xl">
-            <p className="text-accent font-semibold uppercase tracking-widest text-sm mb-4">
-              B Joseph Decorators – London
-            </p>
-            <h1 className="font-heading text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
-              Welcome to B Joseph Decorators
-            </h1>
-            <p className="text-white/70 text-lg md:text-xl mb-4 leading-relaxed">
-              Transforming homes and commercial spaces for over 20 years, B Joseph Decorators is a trusted painting and decorating company based in Bedfordshire and proudly serving North London, West London, North‑West London, Middlesex, and Hertfordshire.
-            </p>
-            <p className="text-white/70 text-lg md:text-xl mb-10 leading-relaxed">
-              We bring craftsmanship, care, and attention to every project, whether it’s a single room refresh, full property redecoration, or specialist restoration work. From wallpaper hanging and interior painting to exterior finishes, plastering, coving, and more, we deliver results that stand the test of time. Fully vetted and approved by 
-              <a
-              href="https://www.trustatrader.com/traders/b-joseph-decorating-painters-and-decorators-barnet"
-              target="_blank"
-              rel="noopener noreferrer"
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-parchment">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 pb-14 md:pt-16 md:pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+            {/* Left: headline */}
+            <div className="lg:col-span-8">
+              <p className="section-label mb-4 animate-fade-up">
+                B Joseph Decorators · Est. 2007 · Bedfordshire &amp; London
+              </p>
+              <h1
+                className="font-heading font-semibold text-ink leading-[0.9] mb-5 animate-fade-up anim-d1"
+                style={{ fontSize: 'clamp(2.4rem, 6vw, 4.5rem)' }}
               >
-              <span className="text-accent font-semibold"> TrustATrader</span>.
-              </a>
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/about" className="btn-accent">More About Us</Link>
-              <Link to="/contact" className="btn-outline">Get a Free Quote</Link>
+                <span className="italic">Crafting</span>{' '}
+                <span>spaces with</span>{' '}
+                <span className="italic" style={{ color: '#C4622D' }}>precision.</span>
+              </h1>
+              <p className="text-ink-mid leading-relaxed max-w-xl mb-6 animate-fade-up anim-d2">
+                Transforming homes and commercial spaces for over 20 years. Based in Bedfordshire, serving North &amp; West London, Middlesex, and Hertfordshire. Fully vetted by{' '}
+                <a
+                  href="https://www.trustatrader.com/traders/b-joseph-decorating-painters-and-decorators-barnet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-copper hover:text-copper-hover link-copper"
+                >
+                  TrustATrader
+                </a>.
+              </p>
+              <div className="flex flex-wrap gap-3 animate-fade-up anim-d3">
+                <Link to="/about" className="btn-primary">Our Story</Link>
+                <Link to="/contact" className="btn-ghost">Free Quote</Link>
+              </div>
+            </div>
+
+            {/* Right: trust stats */}
+            <div className="lg:col-span-4 animate-fade-up anim-d3">
+              {/* Mobile: horizontal 3-col row. Desktop: vertical list with left border */}
+              <div className="grid grid-cols-3 lg:grid-cols-1 border-t lg:border-t-0 lg:border-l border-parchment-border lg:pl-8 divide-x lg:divide-x-0 divide-parchment-border">
+                {[
+                  { value: '20+', label: 'Years experience' },
+                  { value: 'TT397', label: 'TrustATrader member' },
+                  { value: '200+', label: 'Areas covered' },
+                ].map(({ value, label }) => (
+                  <div key={label} className="px-3 lg:px-0 py-5 lg:py-6 lg:border-b lg:border-parchment-border lg:last:border-0">
+                    <p className="font-heading text-2xl lg:text-4xl font-semibold" style={{ color: '#C4622D' }}>{value}</p>
+                    <p className="text-slate text-xs lg:text-sm mt-1 leading-snug" style={{ letterSpacing: '0.03em' }}>{label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Decorative accent bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-parchment-border" />
       </section>
 
-      {/* Services */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
-          <h2 className="section-title">Decorators London Services</h2>
-          <div className="section-divider mx-auto" />
-          <p className="text-white/60 max-w-2xl mx-auto">
-            B Joseph Decorators undertakes both domestic and commercial work, offering a comprehensive range of decorating and property maintenance services.          </p>
-        </div>
+      {/* ── Services Showcase ── */}
+      <ServicesShowcase />
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {/* Painting & Decorating */}
-          <div className="bg-navy-mid rounded-xl p-6 border border-white/5 hover:border-accent/40 transition-colors duration-300">
-            <div className="text-3xl mb-3">🖌️</div>
-            <h3 className="font-heading text-lg font-bold text-white mb-3">Painting &amp; Decorating</h3>
-            <ul className="space-y-1">
-              {paintingServices.map((item) => (
-                <li key={item} className="text-white/60 text-sm flex items-start gap-2">
-                  <span className="text-accent mt-0.5 shrink-0">›</span>{item}
-                </li>
-              ))}
-            </ul>
+      {/* ── Testimonials ── */}
+      <section className="bg-parchment-dark border-t border-parchment-border py-24 md:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="flex items-end gap-8 mb-16">
+            <div>
+              <p className="section-label mb-3">What Clients Say</p>
+              <h2 className="font-heading text-4xl md:text-5xl font-semibold text-ink">Testimonials</h2>
+            </div>
+            <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
           </div>
 
-          {/* Building & Property */}
-          <div className="bg-navy-mid rounded-xl p-6 border border-white/5 hover:border-accent/40 transition-colors duration-300">
-            <div className="text-3xl mb-3">🏗️</div>
-            <h3 className="font-heading text-lg font-bold text-white mb-3">Building &amp; Property</h3>
-            <ul className="space-y-1">
-              {buildingServices.map((item) => (
-                <li key={item} className="text-white/60 text-sm flex items-start gap-2">
-                  <span className="text-accent shrink-0">›</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-parchment-border border border-parchment-border">
+            {[
+              {
+                quote: '"Really excellent work on our patio windows refinishing them, good weather proofing and lovely finish. Nice guy, worked hard and clear communication."',
+                name: 'Francesca',
+                date: '1st July 2025',
+              },
+              {
+                quote: '"A very reliable and trustworthy man a pleasure to have in your house. Work completed on time to a very high standard"',
+                name: 'Susan Fraser',
+                date: '9th June 2025',
+              },
+              {
+                quote: '"Joseph painted the outside of my house last summer to great acclaim from passers by and great appreciation from me. He’s now back to do the inside"',
+                name: 'Gail',
+                date: '7th April 2025',
+              },
+              {
+                quote: '"We are very pleased with the work Joseph did on our house. He repaired and painted our very tired sash windows, cases and sills. He revived the stonework and painted the exterior. He is a pleasure to deal with and clearly enjoys his work. Highly recommended."',
+                name: 'Douglas Thomson',
+                date: '17th February 2025',
+              },
+              {
+                quote: '"Decorated a tired room and restored sash window to a high standard. Highly professional and excellent quality of work. Excellent advice with selecting the best paint colour for the space. He always works so hard to achieve the best results, I recommend him with no reservations and will definitely use this company again."',
+                name: 'Brigid',
+                date: '16th March 2024',
+              },
+              {
+                quote: '"Great job fixing my sash window - very professional"',
+                name: 'Hugo',
+                date: '4th November 2023',
+              },
+            ].map(({ quote, name, date }) => (
+              <div key={name} className="bg-parchment-dark p-8 lg:p-10 flex flex-col gap-6 hover:bg-parchment transition-colors duration-300">
+                <p
+                  className="font-heading italic leading-none select-none"
+                  style={{ fontSize: '4rem', color: '#C4622D', opacity: 0.25, lineHeight: 1 }}
+                  aria-hidden="true"
+                >
+                  "
+                </p>
+                <p className="text-ink-mid leading-relaxed text-sm flex-1 -mt-4">
+                  {quote}
+                </p>
+                <div className="border-t border-parchment-border pt-5">
+                  <p className="font-heading text-base font-semibold text-ink">{name}</p>
+                  <p className="text-slate" style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif', marginTop: '0.2rem' }}>
+                    {date}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Additional Home Services */}
-          <div className="bg-navy-mid rounded-xl p-6 border border-white/5 hover:border-accent/40 transition-colors duration-300">
-            <div className="text-3xl mb-3">🔧</div>
-            <h3 className="font-heading text-lg font-bold text-white mb-3">Additional Home Services</h3>
-            <ul className="space-y-1">
-              {additionalHomeServices.map((item) => (
-                <li key={item} className="text-white/60 text-sm flex items-start gap-2">
-                  <span className="text-accent mt-0.5 shrink-0">›</span>{item}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="bg-navy-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h2 className="section-title text-white">Ready to Get Started?</h2>
-          <p className="text-white/60 mb-8 max-w-xl mx-auto">
-            Contact us today for a free, no-obligation quote. We'd love to help bring your vision to life.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:07793074516" className="btn-accent">Call 07793 074 516</a>
-            <Link to="/contact" className="btn-outline">Send a Message</Link>
+      {/* ── CTA ── */}
+      <section style={{ backgroundColor: '#1E1B16' }} className="py-24 md:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-8">
+              <p className="section-label mb-6" style={{ color: '#C4622D' }}>
+                Ready to start?
+              </p>
+              <h2
+                className="font-heading font-semibold leading-[0.95] mb-6"
+                style={{ fontSize: 'clamp(2.5rem, 7vw, 5rem)', color: '#F4EFE6' }}
+              >
+                Let's bring your{' '}
+                <span className="italic" style={{ color: '#C4622D' }}>vision</span>{' '}
+                to life.
+              </h2>
+              <p className="text-lg leading-relaxed mb-10" style={{ color: 'rgba(244,239,230,0.55)' }}>
+                Contact us today for a free, no-obligation quote. We'd love to help with your project — from a single room to a full property redecoration.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a href="tel:07793074516" className="btn-primary">
+                  Call 07793 074 516
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-block font-medium transition-all duration-200 hover:bg-parchment hover:text-ink"
+                  style={{
+                    border: '1px solid rgba(244,239,230,0.3)',
+                    color: '#F4EFE6',
+                    padding: '0.75rem 1.75rem',
+                    fontSize: '0.78rem',
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    fontFamily: 'Jost, system-ui, sans-serif',
+                  }}
+                >
+                  Send a Message
+                </Link>
+              </div>
+            </div>
+            <div className="lg:col-span-4 hidden lg:block">
+              <div className="border-l border-copper/20 pl-8 space-y-6">
+                {[
+                  'Free written quotation',
+                  'Fully insured & vetted',
+                  'Domestic & commercial',
+                  'Specialist restoration',
+                ].map((item) => (
+                  <p key={item} className="text-sm" style={{ color: 'rgba(244,239,230,0.5)', letterSpacing: '0.05em' }}>
+                    — {item}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

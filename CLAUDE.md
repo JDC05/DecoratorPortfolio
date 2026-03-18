@@ -72,10 +72,11 @@ Place the logo file at `public/logo.png`.
 
 ## Activating the Contact Form
 
-The form uses [Formspree](https://formspree.io):
-1. Create a free account at formspree.io
-2. Create a new form — copy the form ID
-3. Replace `YOUR_FORMSPREE_ID` in `src/pages/Contact.jsx`
+The form uses [Web3Forms](https://web3forms.com) — no account needed:
+1. Go to web3forms.com
+2. Enter the email address you want submissions delivered to
+3. Check your inbox and copy the access key from the confirmation email
+4. Replace `YOUR_WEB3FORMS_ACCESS_KEY` in `src/pages/Contact.jsx`
 
 ## Updating the Coverage Map
 
