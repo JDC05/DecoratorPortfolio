@@ -1,4 +1,76 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+
+const serviceOptions = [
+  'Interior Painting & Decorating',
+  'Exterior Painting',
+  'Wallpaper Hanging',
+  'Timber & Sash Window Restoration',
+  'Plastering & Rendering',
+  'Building & Property Maintenance',
+  'Flooring',
+  'Other / Not sure',
+]
+
+function ServiceSelect({ value, onChange }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const select = (option) => {
+    onChange(option)
+    setOpen(false)
+  }
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between border-0 border-b py-3 text-sm bg-transparent transition-colors duration-200 text-left focus:outline-none"
+        style={{ borderColor: open ? '#C4622D' : '#D6CCBA', color: value ? '#1E1B16' : '#8B7D6B' }}
+      >
+        <span>{value || 'Select a service…'}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-4 h-4 shrink-0 transition-transform duration-200"
+          style={{ transform: open ? 'rotate(180deg)' : 'none', color: '#8B7D6B' }}
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+          strokeLinecap="round" strokeLinejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          className="absolute left-0 right-0 top-full z-20 border border-parchment-border mt-1 py-1"
+          style={{ backgroundColor: '#F4EFE6' }}
+        >
+          {serviceOptions.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => select(option)}
+              className="w-full text-left px-4 py-3 text-sm transition-colors duration-150 hover:bg-parchment-dark"
+              style={{
+                fontFamily: 'inherit',
+                color: option === value ? '#C4622D' : '#4A4438',
+                backgroundColor: option === value ? 'rgba(196,98,45,0.06)' : undefined,
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 /**
  * This form uses Web3Forms for email delivery — no account required.
@@ -191,35 +263,10 @@ export default function Contact() {
                   >
                     Type of Work
                   </label>
-                  <div className="relative">
-                    <select
-                      id="service"
-                      name="service"
-                      value={form.service}
-                      onChange={handleChange}
-                      className={`${inputClass} cursor-pointer pr-8`}
-                      style={{ appearance: 'none', WebkitAppearance: 'none', color: form.service ? undefined : '#8B7D6B' }}
-                    >
-                      <option value="" disabled>Select a service…</option>
-                      <option value="Interior Painting & Decorating">Interior Painting &amp; Decorating</option>
-                      <option value="Exterior Painting">Exterior Painting</option>
-                      <option value="Wallpaper Hanging">Wallpaper Hanging</option>
-                      <option value="Timber & Sash Window Restoration">Timber &amp; Sash Window Restoration</option>
-                      <option value="Plastering & Rendering">Plastering &amp; Rendering</option>
-                      <option value="Building & Property Maintenance">Building &amp; Property Maintenance</option>
-                      <option value="Flooring">Flooring</option>
-                      <option value="Other">Other / Not sure</option>
-                    </select>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
-                      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
-                      strokeLinecap="round" strokeLinejoin="round"
-                      style={{ color: '#8B7D6B' }}
-                    >
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </div>
+                  <ServiceSelect
+                    value={form.service}
+                    onChange={(val) => setForm({ ...form, service: val })}
+                  />
                 </div>
 
                 <div>
