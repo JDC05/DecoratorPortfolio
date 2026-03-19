@@ -16,7 +16,7 @@ const contactDetails = [
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' })
+  const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' })
   const [status, setStatus] = useState('idle') // idle | sending | success | error
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
@@ -32,7 +32,7 @@ export default function Contact() {
       })
       if (res.ok) {
         setStatus('success')
-        setForm({ name: '', phone: '', email: '', message: '' })
+        setForm({ name: '', phone: '', email: '', service: '', message: '' })
       } else {
         setStatus('error')
       }
@@ -181,6 +181,45 @@ export default function Contact() {
                     onChange={handleChange}
                     className={inputClass}
                   />
+                </div>
+
+                <div>
+                  <label
+                    className={labelClass}
+                    htmlFor="service"
+                    style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                  >
+                    Type of Work
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="service"
+                      name="service"
+                      value={form.service}
+                      onChange={handleChange}
+                      className={`${inputClass} cursor-pointer pr-8`}
+                      style={{ appearance: 'none', WebkitAppearance: 'none', color: form.service ? undefined : '#8B7D6B' }}
+                    >
+                      <option value="" disabled>Select a service…</option>
+                      <option value="Interior Painting & Decorating">Interior Painting &amp; Decorating</option>
+                      <option value="Exterior Painting">Exterior Painting</option>
+                      <option value="Wallpaper Hanging">Wallpaper Hanging</option>
+                      <option value="Timber & Sash Window Restoration">Timber &amp; Sash Window Restoration</option>
+                      <option value="Plastering & Rendering">Plastering &amp; Rendering</option>
+                      <option value="Building & Property Maintenance">Building &amp; Property Maintenance</option>
+                      <option value="Flooring">Flooring</option>
+                      <option value="Other">Other / Not sure</option>
+                    </select>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
+                      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+                      strokeLinecap="round" strokeLinejoin="round"
+                      style={{ color: '#8B7D6B' }}
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div>

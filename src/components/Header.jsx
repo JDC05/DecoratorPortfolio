@@ -63,7 +63,7 @@ export default function Header() {
           >
             <span
               className="block h-px bg-ink origin-center transition-all duration-300"
-              style={{ transform: menuOpen ? 'translateY(4px) rotate(45deg)' : 'none' }}
+              style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }}
             />
             <span
               className="block h-px bg-ink transition-all duration-300"
@@ -71,7 +71,7 @@ export default function Header() {
             />
             <span
               className="block h-px bg-ink origin-center transition-all duration-300"
-              style={{ transform: menuOpen ? 'translateY(-4px) rotate(-45deg)' : 'none' }}
+              style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }}
             />
           </button>
         </div>

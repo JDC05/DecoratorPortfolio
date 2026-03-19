@@ -84,9 +84,20 @@ export default function Gallery() {
     if (filtered[index].src) setLightbox(index)
   }
 
-  const closeLightbox = () => setLightbox(null)
-  const prev = () => setLightbox((i) => (i > 0 ? i - 1 : filtered.length - 1))
-  const next = () => setLightbox((i) => (i < filtered.length - 1 ? i + 1 : 0))
+  const closeLightbox = useCallback(() => setLightbox(null), [])
+  const prev = useCallback(() => setLightbox((i) => (i > 0 ? i - 1 : filtered.length - 1)), [filtered.length])
+  const next = useCallback(() => setLightbox((i) => (i < filtered.length - 1 ? i + 1 : 0)), [filtered.length])
+
+  useEffect(() => {
+    if (lightbox === null) return
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') prev()
+      else if (e.key === 'ArrowRight') next()
+      else if (e.key === 'Escape') closeLightbox()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [lightbox, prev, next, closeLightbox])
 
   return (
     <>

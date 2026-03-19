@@ -43,12 +43,24 @@ const areas = [
   'Wootton Green', 'Wrestlingworth', 'Wyboston', 'Wymington', 'Yielden',
 ]
 
+function groupByLetter(list) {
+  return list.reduce((acc, area) => {
+    const letter = area[0].toUpperCase()
+    if (!acc[letter]) acc[letter] = []
+    acc[letter].push(area)
+    return acc
+  }, {})
+}
+
 export default function Coverage() {
   const [query, setQuery] = useState('')
 
   const filtered = query.trim()
     ? areas.filter((area) => area.toLowerCase().includes(query.toLowerCase()))
     : areas
+
+  const grouped = query.trim() ? null : groupByLetter(filtered)
+  const letters = grouped ? Object.keys(grouped).sort() : null
 
   return (
     <>
@@ -103,18 +115,50 @@ export default function Coverage() {
           <p className="text-slate text-sm mb-8">No areas found for "{query}".</p>
         )}
 
-        {/* Areas grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5">
-          {filtered.map((area) => (
-            <div
-              key={area}
-              className="flex items-center gap-2.5 px-3 py-2.5 border border-parchment-border hover:border-copper/40 hover:bg-copper-pale/20 transition-all duration-200"
-            >
-              <span className="w-1 h-1 rounded-full bg-copper shrink-0" />
-              <span className="text-ink-mid text-sm truncate">{area}</span>
-            </div>
-          ))}
-        </div>
+        {/* Search results: flat grid */}
+        {query.trim() && filtered.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5">
+            {filtered.map((area) => (
+              <div
+                key={area}
+                className="flex items-center gap-2.5 px-3 py-2.5 border border-parchment-border hover:border-copper/40 hover:bg-copper-pale/20 transition-all duration-200"
+              >
+                <span className="w-1 h-1 rounded-full bg-copper shrink-0" />
+                <span className="text-ink-mid text-sm truncate">{area}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Grouped A–Z */}
+        {!query.trim() && (
+          <div className="space-y-10">
+            {letters.map((letter) => (
+              <div key={letter}>
+                <div className="flex items-center gap-4 mb-4">
+                  <span
+                    className="font-heading font-semibold leading-none"
+                    style={{ fontSize: '1.5rem', color: '#C4622D' }}
+                  >
+                    {letter}
+                  </span>
+                  <div className="flex-1 h-px bg-parchment-border" />
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5">
+                  {grouped[letter].map((area) => (
+                    <div
+                      key={area}
+                      className="flex items-center gap-2.5 px-3 py-2.5 border border-parchment-border hover:border-copper/40 hover:bg-copper-pale/20 transition-all duration-200"
+                    >
+                      <span className="w-1 h-1 rounded-full bg-copper shrink-0" />
+                      <span className="text-ink-mid text-sm truncate">{area}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* CTA */}
         <div className="mt-16 border border-parchment-border p-10 max-w-md mx-auto text-center">

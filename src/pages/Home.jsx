@@ -242,6 +242,55 @@ export default function Home() {
       {/* ── Services Showcase ── */}
       <ServicesShowcase />
 
+      {/* ── How It Works ── */}
+      <section className="bg-parchment border-t border-parchment-border py-24 md:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-end gap-8 mb-16">
+            <div>
+              <p className="section-label mb-3">Simple Process</p>
+              <h2 className="font-heading text-4xl md:text-5xl font-semibold text-ink">How It Works</h2>
+            </div>
+            <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-parchment-border border border-parchment-border">
+            {[
+              {
+                step: '01',
+                title: 'Free Quote',
+                body: 'Get in touch by phone or message. Tell us about your project and we\'ll arrange a convenient time to discuss.',
+              },
+              {
+                step: '02',
+                title: 'Site Survey',
+                body: 'We visit your property to assess the work in full and provide a detailed written quotation — at no cost and with no obligation.',
+              },
+              {
+                step: '03',
+                title: 'Scheduled Work',
+                body: 'We agree a start date that suits you. All work is carried out with care and respect for your home.',
+              },
+              {
+                step: '04',
+                title: 'Quality Finish',
+                body: 'A final walkthrough ensures you\'re completely satisfied before we leave. We don\'t consider a job done until you do.',
+              },
+            ].map(({ step, title, body }) => (
+              <div key={step} className="bg-parchment p-8 lg:p-10 group hover:bg-parchment-dark transition-colors duration-300">
+                <p
+                  className="font-heading font-semibold leading-none mb-6"
+                  style={{ fontSize: '3.5rem', color: '#D6CCBA' }}
+                >
+                  {step}
+                </p>
+                <h3 className="font-heading text-xl font-semibold text-ink mb-3">{title}</h3>
+                <p className="text-ink-mid text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Testimonials ── */}
       <section className="bg-parchment-dark border-t border-parchment-border py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
