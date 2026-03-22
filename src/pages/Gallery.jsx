@@ -45,15 +45,6 @@ const beforeAfterProjects = Object.entries(beforeAfterRaw).map(([name, imgs]) =>
   return { name, images: sorted }
 })
 
-function shuffleArray(arr) {
-  const shuffled = [...arr]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
-
 const categories = ['All', 'Before-After', 'Interior', 'Exterior', 'Videos']
 
 function GalleryImage({ item, index, onClick }) {
@@ -145,15 +136,12 @@ export default function Gallery() {
   const [baLightbox, setBaLightbox] = useState(null) // { project, index }
   const sentinelRef = useRef(null)
 
-  // Shuffle interior & exterior once on mount; other categories keep file order
-  const shuffledImages = useMemo(() => shuffleArray(regularImages), [])
-
   const filtered = useMemo(() => {
-    if (activeCategory === 'All') return shuffledImages
-    if (activeCategory === 'Videos') return shuffledImages.filter(i => i.type === 'video')
+    if (activeCategory === 'All') return regularImages
+    if (activeCategory === 'Videos') return regularImages.filter(i => i.type === 'video')
     if (activeCategory === 'Before-After') return []
-    return shuffledImages.filter(i => i.category === activeCategory)
-  }, [activeCategory, shuffledImages])
+    return regularImages.filter(i => i.category === activeCategory)
+  }, [activeCategory])
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
@@ -227,12 +215,12 @@ export default function Gallery() {
         <div className="flex flex-wrap gap-0 mb-12 border-b border-parchment-border">
           {categories.map(cat => {
             const count = cat === 'All'
-              ? shuffledImages.length
+              ? regularImages.length
               : cat === 'Videos'
-                ? shuffledImages.filter(i => i.type === 'video').length
+                ? regularImages.filter(i => i.type === 'video').length
                 : cat === 'Before-After'
                   ? beforeAfterProjects.length
-                  : shuffledImages.filter(i => i.category === cat).length
+                  : regularImages.filter(i => i.category === cat).length
             return (
               <button
                 key={cat}
