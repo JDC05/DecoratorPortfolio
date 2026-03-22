@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const areas = [
@@ -54,6 +54,11 @@ function groupByLetter(list) {
 
 export default function Coverage() {
   const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    document.title = 'Coverage Areas | B Joseph Decorators'
+    document.querySelector('meta[name="description"]')?.setAttribute('content', 'B Joseph Decorators covers Bedfordshire, Hertfordshire, North & West London and Middlesex. Check if we serve your area.')
+  }, [])
 
   const filtered = query.trim()
     ? areas.filter((area) => area.toLowerCase().includes(query.toLowerCase()))

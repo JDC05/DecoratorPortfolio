@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const paintingServices = [
@@ -181,6 +181,11 @@ function ServicesShowcase() {
 }
 
 export default function Home() {
+  useEffect(() => {
+    document.title = 'Painters & Decorators Bedfordshire | B Joseph Decorators'
+    document.querySelector('meta[name="description"]')?.setAttribute('content', 'Professional painters and decorators serving Bedfordshire, North & West London, Middlesex and Hertfordshire. 20+ years experience. Free no-obligation quotes. TrustATrader verified.')
+  }, [])
+
   return (
     <>
       {/* ── Hero ── */}

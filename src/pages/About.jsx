@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import repairCareLogo from '/src/assets/repaircare.svg'
 import TrustATraderLogo from '/src/assets/TrustATrader.svg'
@@ -10,6 +11,11 @@ const promises = [
 ]
 
 export default function About() {
+  useEffect(() => {
+    document.title = 'About Us | B Joseph Decorators'
+    document.querySelector('meta[name="description"]')?.setAttribute('content', 'B Joseph Decorators — over 20 years of craftsmanship in painting, decorating and property maintenance. TrustATrader verified and Repair Care certified specialists.')
+  }, [])
+
   return (
     <>
       {/* ── Hero ── */}

@@ -26,14 +26,12 @@ Object.entries(allModules).forEach(([path, module]) => {
 
 function getPhase(stem) {
   if (stem.includes('before')) return 0
-  if (stem.includes('during')) return 1
-  if (stem.includes('after')) return 2
-  return 3
+  if (stem.includes('after')) return 1
+  return 2
 }
 
 function getPhaseLabel(stem) {
   if (stem.includes('before')) return 'Before'
-  if (stem.includes('during')) return 'During'
   if (stem.includes('after')) return 'After'
   return ''
 }
@@ -59,26 +57,33 @@ function shuffleArray(arr) {
 const categories = ['All', 'Before-After', 'Interior', 'Exterior', 'Videos']
 
 function GalleryImage({ item, index, onClick }) {
+  const [loaded, setLoaded] = useState(false)
+
   return (
     <div
       className="relative overflow-hidden aspect-[4/3] cursor-pointer group border border-parchment-border hover:border-copper/40 transition-colors duration-300"
       onClick={() => onClick(index)}
     >
+      {/* Skeleton placeholder */}
+      {!loaded && <div className="absolute inset-0 skeleton-pulse" />}
+
       {item.type === 'video' ? (
         <video
           src={item.src}
           muted
           playsInline
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          onLoadedData={() => setLoaded(true)}
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         />
       ) : (
         <img
           src={item.src}
           alt={item.caption}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          onLoad={() => setLoaded(true)}
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         />
       )}
-      {item.type === 'video' && (
+      {item.type === 'video' && loaded && (
         <span
           className="absolute top-3 right-3 bg-ink/70 text-parchment px-2.5 py-1 pointer-events-none"
           style={{ fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
@@ -131,6 +136,11 @@ function BeforeAfterProject({ project, onImageClick }) {
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [lightbox, setLightbox] = useState(null)
+
+  useEffect(() => {
+    document.title = 'Gallery | B Joseph Decorators'
+    document.querySelector('meta[name="description"]')?.setAttribute('content', 'Browse our gallery of painting, decorating, and restoration projects across Bedfordshire and London. Interior, exterior, before-and-after transformations.')
+  }, [])
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [baLightbox, setBaLightbox] = useState(null) // { project, index }
   const sentinelRef = useRef(null)

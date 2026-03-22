@@ -116,3 +116,34 @@
 .anim-d3 { animation-delay: 0.28s; opacity: 0; }
 .anim-d4 { animation-delay: 0.38s; opacity: 0; }
 .anim-d5 { animation-delay: 0.48s; opacity: 0; }
+
+/* Cookie banner slide-up */
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Page route transition */
+@keyframes pageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-page-in {
+  animation: pageIn 0.22s ease forwards;
+}
+
+/* Skeleton pulse */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.skeleton-pulse {
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+  background-color: #EAE3D7;
+}
