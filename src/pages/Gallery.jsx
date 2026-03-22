@@ -1,17 +1,62 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 
 const PAGE_SIZE = 50
 
-const modules = import.meta.glob('../assets/gallery/**/*.{jpeg,jpg,png,webp,mp4}', { eager: true })
+const allModules = import.meta.glob('../assets/gallery/**/*.{jpeg,jpg,png,webp,mp4}', { eager: true })
 
-const images = Object.entries(modules).map(([path, module]) => {
-  const folder = path.split('/').at(-2)
-  const category = folder.charAt(0).toUpperCase() + folder.slice(1)
-  const type = path.endsWith('.mp4') ? 'video' : 'image'
-  return { src: module.default, caption: category, category, type }
+// Separate before-after images (in subfolders) from regular images
+const beforeAfterRaw = {}
+const regularImages = []
+
+Object.entries(allModules).forEach(([path, module]) => {
+  const parts = path.split('/')
+  const folder = parts.at(-2)
+  const grandFolder = parts.at(-3)
+
+  if (grandFolder === 'before-after') {
+    if (!beforeAfterRaw[folder]) beforeAfterRaw[folder] = []
+    const stem = parts.at(-1).replace(/\.[^.]+$/, '').toLowerCase()
+    beforeAfterRaw[folder].push({ src: module.default, stem })
+  } else {
+    const category = folder.charAt(0).toUpperCase() + folder.slice(1)
+    const type = path.endsWith('.mp4') ? 'video' : 'image'
+    regularImages.push({ src: module.default, caption: category, category, type })
+  }
 })
 
-const categories = ['All', 'Interior', 'Exterior', 'Videos']
+function getPhase(stem) {
+  if (stem.includes('before')) return 0
+  if (stem.includes('during')) return 1
+  if (stem.includes('after')) return 2
+  return 3
+}
+
+function getPhaseLabel(stem) {
+  if (stem.includes('before')) return 'Before'
+  if (stem.includes('during')) return 'During'
+  if (stem.includes('after')) return 'After'
+  return ''
+}
+
+const beforeAfterProjects = Object.entries(beforeAfterRaw).map(([name, imgs]) => {
+  const sorted = [...imgs].sort((a, b) => {
+    const pa = getPhase(a.stem)
+    const pb = getPhase(b.stem)
+    return pa !== pb ? pa - pb : a.stem.localeCompare(b.stem)
+  })
+  return { name, images: sorted }
+})
+
+function shuffleArray(arr) {
+  const shuffled = [...arr]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+const categories = ['All', 'Before-After', 'Interior', 'Exterior', 'Videos']
 
 function GalleryImage({ item, index, onClick }) {
   return (
@@ -46,58 +91,106 @@ function GalleryImage({ item, index, onClick }) {
   )
 }
 
+function BeforeAfterProject({ project, onImageClick }) {
+  const colClass = project.images.length === 2 ? 'grid-cols-2' : 'grid-cols-3'
+  return (
+    <div className="border border-parchment-border p-4">
+      <div className={`grid ${colClass} gap-2`}>
+        {project.images.map((img, i) => {
+          const label = getPhaseLabel(img.stem)
+          return (
+            <div
+              key={i}
+              className="relative cursor-pointer group"
+              onClick={() => onImageClick(project, i)}
+            >
+              <div className="relative overflow-hidden aspect-[4/3]">
+                <img
+                  src={img.src}
+                  alt={label || 'Photo'}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/8 transition-colors duration-300" />
+              </div>
+              {label && (
+                <span
+                  className="absolute bottom-2 left-2 bg-ink/70 text-parchment px-2 py-0.5"
+                  style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+                >
+                  {label}
+                </span>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [lightbox, setLightbox] = useState(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const [baLightbox, setBaLightbox] = useState(null) // { project, index }
   const sentinelRef = useRef(null)
 
-  const filtered = activeCategory === 'All'
-    ? images
-    : activeCategory === 'Videos'
-      ? images.filter((img) => img.type === 'video')
-      : images.filter((img) => img.category === activeCategory)
+  // Shuffle interior & exterior once on mount; other categories keep file order
+  const shuffledImages = useMemo(() => shuffleArray(regularImages), [])
+
+  const filtered = useMemo(() => {
+    if (activeCategory === 'All') return shuffledImages
+    if (activeCategory === 'Videos') return shuffledImages.filter(i => i.type === 'video')
+    if (activeCategory === 'Before-After') return []
+    return shuffledImages.filter(i => i.category === activeCategory)
+  }, [activeCategory, shuffledImages])
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
 
-  useEffect(() => {
-    setVisibleCount(PAGE_SIZE)
-  }, [activeCategory])
+  useEffect(() => { setVisibleCount(PAGE_SIZE) }, [activeCategory])
 
   const loadMore = useCallback(() => {
-    setVisibleCount((c) => Math.min(c + PAGE_SIZE, filtered.length))
+    setVisibleCount(c => Math.min(c + PAGE_SIZE, filtered.length))
   }, [filtered.length])
 
   useEffect(() => {
     const el = sentinelRef.current
     if (!el) return
     const observer = new IntersectionObserver(
-      (entries) => { if (entries[0].isIntersecting) loadMore() },
+      entries => { if (entries[0].isIntersecting) loadMore() },
       { rootMargin: '200px' }
     )
     observer.observe(el)
     return () => observer.disconnect()
   }, [loadMore])
 
-  const openLightbox = (index) => {
-    if (filtered[index].src) setLightbox(index)
-  }
-
+  const openLightbox = index => { if (filtered[index]?.src) setLightbox(index) }
   const closeLightbox = useCallback(() => setLightbox(null), [])
-  const prev = useCallback(() => setLightbox((i) => (i > 0 ? i - 1 : filtered.length - 1)), [filtered.length])
-  const next = useCallback(() => setLightbox((i) => (i < filtered.length - 1 ? i + 1 : 0)), [filtered.length])
+  const prev = useCallback(() => setLightbox(i => (i > 0 ? i - 1 : filtered.length - 1)), [filtered.length])
+  const next = useCallback(() => setLightbox(i => (i < filtered.length - 1 ? i + 1 : 0)), [filtered.length])
+
+  const openBaLightbox = (project, index) => setBaLightbox({ project, index })
+  const closeBaLightbox = useCallback(() => setBaLightbox(null), [])
+  const baPrev = useCallback(() => setBaLightbox(s => ({ ...s, index: s.index > 0 ? s.index - 1 : s.project.images.length - 1 })), [])
+  const baNext = useCallback(() => setBaLightbox(s => ({ ...s, index: s.index < s.project.images.length - 1 ? s.index + 1 : 0 })), [])
 
   useEffect(() => {
-    if (lightbox === null) return
-    const onKey = (e) => {
-      if (e.key === 'ArrowLeft') prev()
-      else if (e.key === 'ArrowRight') next()
-      else if (e.key === 'Escape') closeLightbox()
+    if (lightbox === null && baLightbox === null) return
+    const onKey = e => {
+      if (lightbox !== null) {
+        if (e.key === 'ArrowLeft') prev()
+        else if (e.key === 'ArrowRight') next()
+        else if (e.key === 'Escape') closeLightbox()
+      } else {
+        if (e.key === 'ArrowLeft') baPrev()
+        else if (e.key === 'ArrowRight') baNext()
+        else if (e.key === 'Escape') closeBaLightbox()
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [lightbox, prev, next, closeLightbox])
+  }, [lightbox, baLightbox, prev, next, closeLightbox, baPrev, baNext, closeBaLightbox])
 
   return (
     <>
@@ -122,12 +215,14 @@ export default function Gallery() {
 
         {/* Category tabs */}
         <div className="flex flex-wrap gap-0 mb-12 border-b border-parchment-border">
-          {categories.map((cat) => {
+          {categories.map(cat => {
             const count = cat === 'All'
-              ? images.length
+              ? shuffledImages.length
               : cat === 'Videos'
-                ? images.filter(i => i.type === 'video').length
-                : images.filter(i => i.category === cat).length
+                ? shuffledImages.filter(i => i.type === 'video').length
+                : cat === 'Before-After'
+                  ? beforeAfterProjects.length
+                  : shuffledImages.filter(i => i.category === cat).length
             return (
               <button
                 key={cat}
@@ -146,24 +241,33 @@ export default function Gallery() {
           })}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {visible.map((item, i) => (
-            <GalleryImage key={`${item.src}-${i}`} item={item} index={i} onClick={openLightbox} />
-          ))}
-        </div>
-
-        {hasMore && <div ref={sentinelRef} className="h-10" />}
-
-        <p
-          className="text-center mt-10"
-          style={{ color: '#8B7D6B', fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
-        >
-          Showing {visible.length} of {filtered.length}
-        </p>
+        {/* Before-After project cards */}
+        {activeCategory === 'Before-After' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {beforeAfterProjects.map(project => (
+              <BeforeAfterProject key={project.name} project={project} onImageClick={openBaLightbox} />
+            ))}
+          </div>
+        ) : (
+          <>
+            {/* Regular image grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {visible.map((item, i) => (
+                <GalleryImage key={`${item.src}-${i}`} item={item} index={i} onClick={openLightbox} />
+              ))}
+            </div>
+            {hasMore && <div ref={sentinelRef} className="h-10" />}
+            <p
+              className="text-center mt-10"
+              style={{ color: '#8B7D6B', fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+            >
+              Showing {visible.length} of {filtered.length}
+            </p>
+          </>
+        )}
       </section>
 
-      {/* ── Lightbox ── */}
+      {/* ── Regular Lightbox ── */}
       {lightbox !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -175,19 +279,14 @@ export default function Gallery() {
             style={{ fontSize: '2rem', fontWeight: 300, lineHeight: 1 }}
             onClick={closeLightbox}
             aria-label="Close"
-          >
-            ×
-          </button>
+          >×</button>
           <button
             className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
             style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
-            onClick={(e) => { e.stopPropagation(); prev() }}
+            onClick={e => { e.stopPropagation(); prev() }}
             aria-label="Previous"
-          >
-            ‹
-          </button>
-
-          <div className="max-w-5xl max-h-[85vh] relative" onClick={(e) => e.stopPropagation()}>
+          >‹</button>
+          <div className="max-w-5xl max-h-[85vh] relative" onClick={e => e.stopPropagation()}>
             {filtered[lightbox].type === 'video' ? (
               <video
                 key={filtered[lightbox].src}
@@ -210,17 +309,60 @@ export default function Gallery() {
               {lightbox + 1} / {filtered.length}
             </p>
           </div>
-
           <button
             className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
             style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
-            onClick={(e) => { e.stopPropagation(); next() }}
+            onClick={e => { e.stopPropagation(); next() }}
             aria-label="Next"
-          >
-            ›
-          </button>
+          >›</button>
         </div>
       )}
+
+      {/* ── Before-After Lightbox ── */}
+      {baLightbox !== null && (() => {
+        const { project, index } = baLightbox
+        const img = project.images[index]
+        const label = getPhaseLabel(img.stem)
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(30,27,22,0.97)' }}
+            onClick={closeBaLightbox}
+          >
+            <button
+              className="absolute top-6 right-6 text-parchment/50 hover:text-copper transition-colors"
+              style={{ fontSize: '2rem', fontWeight: 300, lineHeight: 1 }}
+              onClick={closeBaLightbox}
+              aria-label="Close"
+            >×</button>
+            <button
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
+              style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
+              onClick={e => { e.stopPropagation(); baPrev() }}
+              aria-label="Previous"
+            >‹</button>
+            <div className="max-w-5xl max-h-[85vh] relative" onClick={e => e.stopPropagation()}>
+              <img
+                src={img.src}
+                alt={label || 'Photo'}
+                className="max-h-[80vh] max-w-full object-contain"
+              />
+              <p
+                className="text-center mt-4"
+                style={{ color: 'rgba(244,239,230,0.4)', fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
+              >
+                {label ? `${label} · ` : ''}{index + 1} / {project.images.length}
+              </p>
+            </div>
+            <button
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
+              style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
+              onClick={e => { e.stopPropagation(); baNext() }}
+              aria-label="Next"
+            >›</button>
+          </div>
+        )
+      })()}
     </>
   )
 }
