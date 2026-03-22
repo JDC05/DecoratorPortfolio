@@ -2,7 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import CookieBanner from './components/CookieBanner'
+import SiteNotice from './components/SiteNotice'
 import Home from './pages/Home'
 import About from './pages/About'
 import Gallery from './pages/Gallery'
@@ -81,7 +81,7 @@ function App() {
       <Footer />
       <BackToTop />
       <WhatsAppButton />
-      <CookieBanner />
+      <SiteNotice />
     </div>
   )
 }
