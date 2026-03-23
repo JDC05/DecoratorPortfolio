@@ -134,7 +134,7 @@ export default function Coverage() {
             )}
 
             <iframe
-              src="https://maps.google.com/maps?q=Bedfordshire,+England,+UK&z=9&output=embed"
+              src="https://www.google.com/maps?q=Bedfordshire,+England,+UK&z=9&output=embed"
               className="w-full h-full"
               style={{ border: 0, display: 'block', pointerEvents: mapActive ? 'auto' : 'none' }}
               allowFullScreen
