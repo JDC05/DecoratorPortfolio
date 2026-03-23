@@ -81,7 +81,7 @@ export default function Coverage() {
           </h1>
           <div className="copper-rule mt-5 mb-4 animate-fade-up anim-d2" />
           <p className="text-ink-mid max-w-xl animate-fade-up anim-d3">
-            We provide professional decorating services across Bedfordshire and the surrounding areas. Don't see your town listed? Get in touch — we may still be able to help.
+            We provide professional decorating services across Bedfordshire, Hertfordshire, North &amp; West London, and Middlesex. The list below covers our Bedfordshire locations — don't see your area? Get in touch, we very likely cover it.
           </p>
         </div>
       </section>
@@ -93,7 +93,7 @@ export default function Coverage() {
         <div className="flex flex-col sm:flex-row sm:items-end gap-6 mb-12">
           <div>
             <p className="section-label mb-2">Areas We Cover</p>
-            <p className="text-slate text-sm">{areas.length} locations across Bedfordshire</p>
+            <p className="text-slate text-sm">{areas.length} Bedfordshire locations listed</p>
           </div>
           <div className="sm:ml-auto relative w-full sm:max-w-xs">
             <input

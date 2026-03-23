@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 
 const PAGE_SIZE = 50
 
@@ -173,6 +174,16 @@ export default function Gallery() {
   const baPrev = useCallback(() => setBaLightbox(s => ({ ...s, index: s.index > 0 ? s.index - 1 : s.project.images.length - 1 })), [])
   const baNext = useCallback(() => setBaLightbox(s => ({ ...s, index: s.index < s.project.images.length - 1 ? s.index + 1 : 0 })), [])
 
+  // Bug 1: scroll lock while any lightbox is open
+  useEffect(() => {
+    if (lightbox !== null || baLightbox !== null) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox, baLightbox])
+
   useEffect(() => {
     if (lightbox === null && baLightbox === null) return
     const onKey = e => {
@@ -266,9 +277,9 @@ export default function Gallery() {
       </section>
 
       {/* ── Regular Lightbox ── */}
-      {lightbox !== null && (
+      {lightbox !== null && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
           style={{ backgroundColor: 'rgba(30,27,22,0.97)' }}
           onClick={closeLightbox}
         >
@@ -291,13 +302,14 @@ export default function Gallery() {
                 src={filtered[lightbox].src}
                 controls
                 autoPlay
-                className="max-h-[80vh] max-w-full"
+                className="max-h-[80vh] max-w-full animate-fade-in"
               />
             ) : (
               <img
+                key={filtered[lightbox].src}
                 src={filtered[lightbox].src}
                 alt={filtered[lightbox].caption}
-                className="max-h-[80vh] max-w-full object-contain"
+                className="max-h-[80vh] max-w-full object-contain animate-fade-in"
               />
             )}
             <p
@@ -313,7 +325,8 @@ export default function Gallery() {
             onClick={e => { e.stopPropagation(); next() }}
             aria-label="Next"
           >›</button>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── Before-After Lightbox ── */}
@@ -321,9 +334,9 @@ export default function Gallery() {
         const { project, index } = baLightbox
         const img = project.images[index]
         const label = getPhaseLabel(img.stem)
-        return (
+        return createPortal(
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
             style={{ backgroundColor: 'rgba(30,27,22,0.97)' }}
             onClick={closeBaLightbox}
           >
@@ -341,9 +354,10 @@ export default function Gallery() {
             >‹</button>
             <div className="max-w-5xl max-h-[85vh] relative" onClick={e => e.stopPropagation()}>
               <img
+                key={img.src}
                 src={img.src}
                 alt={label || 'Photo'}
-                className="max-h-[80vh] max-w-full object-contain"
+                className="max-h-[80vh] max-w-full object-contain animate-fade-in"
               />
               <p
                 className="text-center mt-4"
@@ -358,7 +372,8 @@ export default function Gallery() {
               onClick={e => { e.stopPropagation(); baNext() }}
               aria-label="Next"
             >›</button>
-          </div>
+          </div>,
+          document.body
         )
       })()}
     </>

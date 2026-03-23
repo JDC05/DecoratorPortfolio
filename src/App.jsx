@@ -2,7 +2,6 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import SiteNotice from './components/SiteNotice'
 import Home from './pages/Home'
 import About from './pages/About'
 import Gallery from './pages/Gallery'
@@ -28,9 +27,22 @@ function BackToTop() {
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       aria-label="Back to top"
-      className="fixed bottom-6 right-6 z-40 w-10 h-10 flex items-center justify-center border border-parchment-border bg-parchment hover:bg-parchment-dark hover:border-copper/40 transition-all duration-200 shadow-md"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group"
+      style={{
+        backgroundColor: 'rgba(30,27,22,0.15)',
+        border: '1px solid rgba(30,27,22,0.12)',
+        backdropFilter: 'blur(4px)',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.backgroundColor = 'rgba(30,27,22,0.85)'
+        e.currentTarget.style.borderColor = 'rgba(196,98,45,0.5)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.backgroundColor = 'rgba(30,27,22,0.15)'
+        e.currentTarget.style.borderColor = 'rgba(30,27,22,0.12)'
+      }}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#C4622D' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#C4622D' }}>
         <polyline points="18 15 12 9 6 15" />
       </svg>
     </button>
@@ -44,7 +56,7 @@ function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 left-6 z-40 w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+      className="fixed bottom-6 right-6 z-40 w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all duration-200 hover:scale-110"
       style={{ backgroundColor: '#25D366' }}
     >
       <svg viewBox="0 0 24 24" className="w-6 h-6" fill="white" aria-hidden="true">
@@ -81,7 +93,6 @@ function App() {
       <Footer />
       <BackToTop />
       <WhatsAppButton />
-      <SiteNotice />
     </div>
   )
 }

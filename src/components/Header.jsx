@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import bjosephbanner from '/src/assets/bjosephbanner.png'
 
@@ -12,6 +12,22 @@ const navLinks = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const headerRef = useRef(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    const handler = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    document.addEventListener('touchstart', handler)
+    return () => {
+      document.removeEventListener('mousedown', handler)
+      document.removeEventListener('touchstart', handler)
+    }
+  }, [menuOpen])
 
   const navClass = ({ isActive }) =>
     isActive
@@ -19,7 +35,7 @@ export default function Header() {
       : 'text-ink-mid hover:text-copper link-copper'
 
   return (
-    <header className="bg-parchment border-b border-parchment-border sticky top-0 z-50">
+    <header ref={headerRef} className="bg-parchment border-b border-parchment-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between py-3">
 
