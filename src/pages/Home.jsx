@@ -1,16 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-function ShieldBadge({ label }) {
-  return (
-    <svg width="52" height="58" viewBox="0 0 52 58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M26 2L4 11V28C4 40.5 13.5 52 26 56C38.5 52 48 40.5 48 28V11L26 2Z" fill="#FAE8DC" stroke="#C4622D" strokeWidth="1.5"/>
-      <text x="26" y="33" textAnchor="middle" fill="#C4622D" fontSize="18" fontFamily="Cormorant Garamond, serif" fontWeight="700">{label}</text>
-    </svg>
-  )
-}
 
-function StarIcon({ filled = true, size = 15 }) {
+function StarIcon({ size = 15 }) {
   return (
     <svg
       width={size}
@@ -21,7 +13,7 @@ function StarIcon({ filled = true, size = 15 }) {
     >
       <polygon
         points="10,1 12.9,7 19.5,7.6 14.5,12 16.2,18.5 10,15 3.8,18.5 5.5,12 0.5,7.6 7.1,7"
-        fill={filled ? '#C4622D' : 'none'}
+        fill="#C4622D"
         stroke="#C4622D"
         strokeWidth="1.2"
       />
@@ -183,7 +175,7 @@ function ServicesShowcase() {
             </div>
 
             {/* Items — key forces remount → animation replay on category change */}
-            <ul key={activeIndex} className="space-y-0">
+            <ul key={activeIndex}>
               {group.items.map((item, i) => (
                 <li
                   key={item}
@@ -275,115 +267,10 @@ export default function Home() {
       {/* ── Services Showcase ── */}
       <ServicesShowcase />
 
-      {/* ── How It Works ── */}
-      <section className="bg-parchment border-t border-parchment-border py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-end gap-8 mb-16">
-            <div>
-              <p className="section-label mb-3">Simple Process</p>
-              <h2 className="font-heading text-4xl md:text-5xl font-semibold text-ink">How It Works</h2>
-            </div>
-            <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-parchment-border border border-parchment-border">
-            {[
-              {
-                step: '01',
-                title: 'Free Quote',
-                body: 'Get in touch by phone or message. Tell us about your project and we\'ll arrange a convenient time to discuss.',
-              },
-              {
-                step: '02',
-                title: 'Site Survey',
-                body: 'We visit your property to assess the work in full and provide a detailed written quotation — at no cost and with no obligation.',
-              },
-              {
-                step: '03',
-                title: 'Scheduled Work',
-                body: 'We agree a start date that suits you. All work is carried out with care and respect for your home.',
-              },
-              {
-                step: '04',
-                title: 'Quality Finish',
-                body: 'A final walkthrough ensures you\'re completely satisfied before we leave. We don\'t consider a job done until you do.',
-              },
-            ].map(({ step, title, body }) => (
-              <div key={step} className="bg-parchment p-8 lg:p-10 group hover:bg-parchment-dark transition-colors duration-300">
-                <p
-                  className="font-heading font-semibold leading-none mb-6"
-                  style={{ fontSize: '3.5rem', color: '#D6CCBA' }}
-                >
-                  {step}
-                </p>
-                <h3 className="font-heading text-xl font-semibold text-ink mb-3">{title}</h3>
-                <p className="text-ink-mid text-sm leading-relaxed">{body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── TrustATrader Badge ── */}
       <section className="bg-parchment border-t border-parchment-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {/* Mobile: brand header + 2×2 grid. sm+: single horizontal row */}
-
-          {/* Brand — full width on mobile, hidden on sm+ */}
-          <div className="flex flex-col items-center gap-0.5 py-6 sm:hidden">
-            <p className="section-label">Verified by</p>
-            <a
-              href="https://www.trustatrader.com/traders/b-joseph-decorating-painters-and-decorators-barnet"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-heading text-xl font-semibold text-ink hover:text-copper transition-colors duration-200"
-            >
-              TrustATrader
-            </a>
-          </div>
-
-          {/* Mobile 2×2 grid of stats */}
-          <div className="grid grid-cols-2 sm:hidden">
-            {/* Stars + rating */}
-            <div className="flex flex-col items-center gap-1 py-6 px-4">
-              <div className="flex items-center gap-0.5">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <StarIcon key={i} filled size={15} />
-                ))}
-              </div>
-              <div className="flex items-baseline gap-1">
-                <span className="font-heading text-2xl font-semibold text-ink leading-none">4.93</span>
-                <span className="text-slate" style={{ fontSize: '0.7rem', letterSpacing: '0.06em' }}>/ 5</span>
-              </div>
-            </div>
-
-            {/* Review count */}
-            <div className="flex flex-col items-center gap-0.5 py-6 px-4">
-              <span className="font-heading text-2xl font-semibold text-ink leading-none">73</span>
-              <p className="text-slate text-center" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
-                Verified reviews
-              </p>
-            </div>
-
-            {/* 0 missed appointments */}
-            <div className="flex flex-col items-center gap-0.5 py-6 px-4">
-              <span className="font-heading text-2xl font-semibold leading-none" style={{ color: '#C4622D' }}>0</span>
-              <p className="text-slate text-center" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
-                Missed appts. 6 months
-              </p>
-            </div>
-
-            {/* 18 year member */}
-            <div className="flex flex-col items-center gap-1 py-5 px-4">
-              <ShieldBadge label="18" />
-              <p className="text-slate text-center" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
-                Year member
-              </p>
-            </div>
-          </div>
-
-          {/* Desktop horizontal row — hidden on mobile */}
-          <div className="hidden sm:flex flex-row items-center justify-center gap-10 py-8">
+          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 lg:gap-x-10 py-7 lg:py-8">
 
             {/* Brand */}
             <div className="flex flex-col items-center gap-0.5">
@@ -392,53 +279,53 @@ export default function Home() {
                 href="https://www.trustatrader.com/traders/b-joseph-decorating-painters-and-decorators-barnet"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-heading text-xl font-semibold text-ink hover:text-copper transition-colors duration-200"
+                className="font-heading text-lg lg:text-xl font-semibold text-ink hover:text-copper transition-colors duration-200"
               >
                 TrustATrader
               </a>
             </div>
 
-            <div className="w-px self-stretch bg-parchment-border" />
+            <div className="hidden lg:block w-px self-stretch bg-parchment-border" />
 
             {/* Stars + rating */}
             <div className="flex flex-col items-center gap-1">
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <StarIcon key={i} filled size={17} />
+                  <StarIcon key={i} size={16} />
                 ))}
               </div>
               <div className="flex items-baseline gap-1.5">
-                <span className="font-heading text-3xl font-semibold text-ink leading-none">4.93</span>
-                <span className="text-slate" style={{ fontSize: '0.75rem', letterSpacing: '0.08em' }}>out of 5</span>
+                <span className="font-heading text-2xl lg:text-3xl font-semibold text-ink leading-none">4.93</span>
+                <span className="text-slate" style={{ fontSize: '0.72rem', letterSpacing: '0.08em' }}>out of 5</span>
               </div>
             </div>
 
-            <div className="w-px self-stretch bg-parchment-border" />
+            <div className="hidden lg:block w-px self-stretch bg-parchment-border" />
 
             {/* Review count */}
             <div className="flex flex-col items-center gap-0.5">
-              <span className="font-heading text-3xl font-semibold text-ink leading-none">73</span>
-              <p className="text-slate" style={{ fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+              <span className="font-heading text-2xl lg:text-3xl font-semibold text-ink leading-none">73</span>
+              <p className="text-slate" style={{ fontSize: '0.66rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
                 Verified reviews
               </p>
             </div>
 
-            <div className="w-px self-stretch bg-parchment-border" />
+            <div className="hidden lg:block w-px self-stretch bg-parchment-border" />
 
             {/* 0 missed appointments */}
             <div className="flex flex-col items-center gap-0.5">
-              <span className="font-heading text-3xl font-semibold leading-none" style={{ color: '#C4622D' }}>0</span>
-              <p className="text-slate" style={{ fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
-                Missed appts. in 6 months
+              <span className="font-heading text-2xl lg:text-3xl font-semibold leading-none" style={{ color: '#C4622D' }}>0</span>
+              <p className="text-slate text-center" style={{ fontSize: '0.66rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Missed appointments<br />in the past 6 months
               </p>
             </div>
 
-            <div className="w-px self-stretch bg-parchment-border" />
+            <div className="hidden lg:block w-px self-stretch bg-parchment-border" />
 
             {/* 18 year member */}
-            <div className="flex flex-col items-center gap-1">
-              <ShieldBadge label="18" />
-              <p className="text-slate" style={{ fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="font-heading text-2xl lg:text-3xl font-semibold leading-none" style={{ color: '#C9A227' }}>18</span>
+              <p className="text-slate" style={{ fontSize: '0.66rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
                 Year member
               </p>
             </div>
@@ -472,7 +359,7 @@ export default function Home() {
                 date: '9th June 2025',
               },
               {
-                quote: '"Joseph painted the outside of my house last summer to great acclaim from passers by and great appreciation from me. He’s now back to do the inside"',
+                quote: '"Joseph painted the outside of my house last summer to great acclaim from passers by and great appreciation from me. He\u2019s now back to do the inside"',
                 name: 'Gail',
                 date: '7th April 2025',
               },
