@@ -1,6 +1,34 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+function ShieldBadge({ label }) {
+  return (
+    <svg width="52" height="58" viewBox="0 0 52 58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M26 2L4 11V28C4 40.5 13.5 52 26 56C38.5 52 48 40.5 48 28V11L26 2Z" fill="#FAE8DC" stroke="#C4622D" strokeWidth="1.5"/>
+      <text x="26" y="33" textAnchor="middle" fill="#C4622D" fontSize="18" fontFamily="Cormorant Garamond, serif" fontWeight="700">{label}</text>
+    </svg>
+  )
+}
+
+function StarIcon({ filled = true, size = 15 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <polygon
+        points="10,1 12.9,7 19.5,7.6 14.5,12 16.2,18.5 10,15 3.8,18.5 5.5,12 0.5,7.6 7.1,7"
+        fill={filled ? '#C4622D' : 'none'}
+        stroke="#C4622D"
+        strokeWidth="1.2"
+      />
+    </svg>
+  )
+}
+
 const paintingServices = [
   'Interior painting',
   'Exterior painting with durable weathershield coatings',
@@ -292,6 +320,129 @@ export default function Home() {
                 <p className="text-ink-mid text-sm leading-relaxed">{body}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TrustATrader Badge ── */}
+      <section className="bg-parchment border-t border-parchment-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Mobile: brand header + 2×2 grid. sm+: single horizontal row */}
+
+          {/* Brand — full width on mobile, hidden on sm+ */}
+          <div className="flex flex-col items-center gap-0.5 py-6 sm:hidden">
+            <p className="section-label">Verified by</p>
+            <a
+              href="https://www.trustatrader.com/traders/b-joseph-decorating-painters-and-decorators-barnet"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-heading text-xl font-semibold text-ink hover:text-copper transition-colors duration-200"
+            >
+              TrustATrader
+            </a>
+          </div>
+
+          {/* Mobile 2×2 grid of stats */}
+          <div className="grid grid-cols-2 sm:hidden">
+            {/* Stars + rating */}
+            <div className="flex flex-col items-center gap-1 py-6 px-4">
+              <div className="flex items-center gap-0.5">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <StarIcon key={i} filled size={15} />
+                ))}
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="font-heading text-2xl font-semibold text-ink leading-none">4.93</span>
+                <span className="text-slate" style={{ fontSize: '0.7rem', letterSpacing: '0.06em' }}>/ 5</span>
+              </div>
+            </div>
+
+            {/* Review count */}
+            <div className="flex flex-col items-center gap-0.5 py-6 px-4">
+              <span className="font-heading text-2xl font-semibold text-ink leading-none">73</span>
+              <p className="text-slate text-center" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Verified reviews
+              </p>
+            </div>
+
+            {/* 0 missed appointments */}
+            <div className="flex flex-col items-center gap-0.5 py-6 px-4">
+              <span className="font-heading text-2xl font-semibold leading-none" style={{ color: '#C4622D' }}>0</span>
+              <p className="text-slate text-center" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Missed appts. 6 months
+              </p>
+            </div>
+
+            {/* 18 year member */}
+            <div className="flex flex-col items-center gap-1 py-5 px-4">
+              <ShieldBadge label="18" />
+              <p className="text-slate text-center" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Year member
+              </p>
+            </div>
+          </div>
+
+          {/* Desktop horizontal row — hidden on mobile */}
+          <div className="hidden sm:flex flex-row items-center justify-center gap-10 py-8">
+
+            {/* Brand */}
+            <div className="flex flex-col items-center gap-0.5">
+              <p className="section-label">Verified by</p>
+              <a
+                href="https://www.trustatrader.com/traders/b-joseph-decorating-painters-and-decorators-barnet"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-heading text-xl font-semibold text-ink hover:text-copper transition-colors duration-200"
+              >
+                TrustATrader
+              </a>
+            </div>
+
+            <div className="w-px self-stretch bg-parchment-border" />
+
+            {/* Stars + rating */}
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <StarIcon key={i} filled size={17} />
+                ))}
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-heading text-3xl font-semibold text-ink leading-none">4.93</span>
+                <span className="text-slate" style={{ fontSize: '0.75rem', letterSpacing: '0.08em' }}>out of 5</span>
+              </div>
+            </div>
+
+            <div className="w-px self-stretch bg-parchment-border" />
+
+            {/* Review count */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="font-heading text-3xl font-semibold text-ink leading-none">73</span>
+              <p className="text-slate" style={{ fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Verified reviews
+              </p>
+            </div>
+
+            <div className="w-px self-stretch bg-parchment-border" />
+
+            {/* 0 missed appointments */}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="font-heading text-3xl font-semibold leading-none" style={{ color: '#C4622D' }}>0</span>
+              <p className="text-slate" style={{ fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Missed appts. in 6 months
+              </p>
+            </div>
+
+            <div className="w-px self-stretch bg-parchment-border" />
+
+            {/* 18 year member */}
+            <div className="flex flex-col items-center gap-1">
+              <ShieldBadge label="18" />
+              <p className="text-slate" style={{ fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}>
+                Year member
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
