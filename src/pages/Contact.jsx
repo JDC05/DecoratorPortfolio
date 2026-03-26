@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import Reveal from '../components/Reveal'
 
 const serviceOptions = [
   'Interior Painting & Decorating',
@@ -75,7 +76,7 @@ function ServiceSelect({ value, onChange }) {
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
 
 const contactDetails = [
-  { label: 'Phone', value: '07793 074 516', href: 'tel:07793074516' },
+  { label: 'Phone', value: '077 9307 4516', href: 'tel:07793074516' },
   { label: 'WhatsApp', value: 'Message on WhatsApp', href: 'https://wa.me/447793074516' },
   { label: 'Email', value: 'info@bjosephdecorators.co.uk', href: 'mailto:info@bjosephdecorators.co.uk' },
 ]
@@ -140,6 +141,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
 
           {/* Contact details sidebar */}
+          <Reveal>
           <div>
             <p className="section-label mb-8">Details</p>
             <div className="space-y-8">
@@ -182,9 +184,11 @@ export default function Contact() {
               </address>
             </div>
           </div>
+          </Reveal>
 
           {/* Form */}
-          <div className="lg:col-span-2">
+          <Reveal delay={0.15} className="lg:col-span-2">
+          <div>
             <p className="section-label mb-8">Send a Message</p>
 
             {status === 'success' ? (
@@ -312,6 +316,7 @@ export default function Contact() {
               </form>
             )}
           </div>
+          </Reveal>
         </div>
       </section>
     </>

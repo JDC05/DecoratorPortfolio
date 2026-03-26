@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Reveal from '../components/Reveal'
 
 
 function StarIcon({ size = 15 }) {
@@ -69,18 +70,21 @@ function ServicesShowcase() {
     <section className="bg-parchment border-t border-parchment-border">
       {/* Section header */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 md:pt-32 pb-12">
-        <div className="flex items-end gap-8">
-          <div>
-            <p className="section-label mb-3">What We Offer</p>
-            <h2 className="font-heading text-4xl md:text-5xl font-semibold text-ink">Our Services</h2>
+        <Reveal>
+          <div className="flex items-end gap-8">
+            <div>
+              <p className="section-label mb-3">What We Offer</p>
+              <h2 className="font-heading text-4xl md:text-5xl font-semibold text-ink">Our Services</h2>
+            </div>
+            <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
           </div>
-          <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
-        </div>
+        </Reveal>
       </div>
 
       {/* Interactive panel */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-24 md:pb-32">
-        <div className="border border-parchment-border grid grid-cols-1 lg:grid-cols-5">
+        <Reveal delay={0.1}>
+          <div className="border border-parchment-border grid grid-cols-1 lg:grid-cols-5">
 
           {/* Left: category selector */}
           <div className="lg:col-span-2 border-b lg:border-b-0 lg:border-r border-parchment-border flex flex-col">
@@ -194,6 +198,7 @@ function ServicesShowcase() {
             </ul>
           </div>
         </div>
+        </Reveal>
 
       </div>
     </section>
@@ -270,6 +275,7 @@ export default function Home() {
       {/* ── TrustATrader Badge ── */}
       <section className="bg-parchment border-t border-parchment-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <Reveal>
           <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 lg:gap-x-10 py-7 lg:py-8">
 
             {/* Brand */}
@@ -331,6 +337,7 @@ export default function Home() {
             </div>
 
           </div>
+          </Reveal>
         </div>
       </section>
 
@@ -338,6 +345,7 @@ export default function Home() {
       <section className="bg-parchment-dark border-t border-parchment-border py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
+          <Reveal>
           <div className="flex items-end gap-8 mb-16">
             <div>
               <p className="section-label mb-3">What Clients Say</p>
@@ -345,7 +353,9 @@ export default function Home() {
             </div>
             <div className="flex-1 h-px bg-parchment-border hidden md:block mb-3" />
           </div>
+          </Reveal>
 
+          <Reveal delay={0.1}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-parchment-border border border-parchment-border">
             {[
               {
@@ -399,6 +409,7 @@ export default function Home() {
               </div>
             ))}
           </div>
+          </Reveal>
 
         </div>
       </section>
@@ -406,6 +417,7 @@ export default function Home() {
       {/* ── CTA ── */}
       <section style={{ backgroundColor: '#1E1B16' }} className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <Reveal>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-8">
               <p className="section-label mb-6" style={{ color: '#C4622D' }}>
@@ -424,7 +436,7 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <a href="tel:07793074516" className="btn-primary">
-                  Call 07793 074 516
+                  Call 077 9307 4516
                 </a>
                 <Link
                   to="/contact"
@@ -458,6 +470,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          </Reveal>
         </div>
       </section>
     </>

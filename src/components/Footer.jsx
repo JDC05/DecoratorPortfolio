@@ -12,8 +12,13 @@ export default function Footer() {
           <div>
             <h3 className="font-heading text-2xl font-semibold text-ink mb-3">B.Joseph Decorators</h3>
             <p className="text-slate text-sm leading-relaxed">
-              Professional decorating and property maintenance services across Bedfordshire and London. Est. 2007.
+              Professional decorating and property maintenance services. 
             </p>
+            <p className="text-slate text-sm leading-relaxed">
+              Based in Bedfordshire, 
+              serving North & West London, Middlesex, and Hertfordshire.
+            </p>
+           <p className="text-slate text-sm leading-relaxed">Est. 2007.</p>
           </div>
 
           {/* Quick links */}
@@ -42,7 +47,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li>
                 <a href="tel:07793074516" className="text-ink-mid hover:text-copper transition-colors duration-200 block">
-                  07793 074 516
+                  077 9307 4516
                 </a>
               </li>
               <li>

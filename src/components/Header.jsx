@@ -68,7 +68,7 @@ export default function Header() {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.21 2.2z" />
             </svg>
-            07793 074 516
+            077 9307 4516
           </a>
 
           {/* Mobile hamburger */}
@@ -94,33 +94,41 @@ export default function Header() {
       </div>
 
       {/* Mobile dropdown */}
-      {menuOpen && (
-        <div className="md:hidden bg-parchment-dark border-t border-parchment-border">
-          <nav className="flex flex-col px-6 py-6 gap-5">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.to === '/'}
-                onClick={() => setMenuOpen(false)}
-                style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, system-ui, sans-serif' }}
-                className={({ isActive }) =>
-                  isActive ? 'text-copper font-medium' : 'text-ink-mid hover:text-copper'
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-            <a
-              href="tel:07793074516"
-              className="text-copper font-medium mt-1 pt-5 border-t border-parchment-border"
-              style={{ fontSize: '0.85rem', fontFamily: 'Jost, system-ui, sans-serif' }}
+      <div
+        className="md:hidden bg-parchment-dark border-parchment-border overflow-hidden"
+        style={{
+          maxHeight: menuOpen ? '320px' : '0',
+          opacity: menuOpen ? 1 : 0,
+          borderTopWidth: menuOpen ? '1px' : '0',
+          transition: menuOpen
+            ? 'max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease, border-top-width 0s 0s'
+            : 'max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease, border-top-width 0s 0.35s',
+        }}
+      >
+        <nav className="flex flex-col px-6 py-6 gap-5">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === '/'}
+              onClick={() => setMenuOpen(false)}
+              style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, system-ui, sans-serif' }}
+              className={({ isActive }) =>
+                isActive ? 'text-copper font-medium' : 'text-ink-mid hover:text-copper'
+              }
             >
-              07793 074 516
-            </a>
-          </nav>
-        </div>
-      )}
+              {link.label}
+            </NavLink>
+          ))}
+          <a
+            href="tel:07793074516"
+            className="text-copper font-medium mt-1 pt-5 border-t border-parchment-border"
+            style={{ fontSize: '0.85rem', fontFamily: 'Jost, system-ui, sans-serif' }}
+          >
+            077 9307 4516
+          </a>
+        </nav>
+      </div>
     </header>
   )
 }

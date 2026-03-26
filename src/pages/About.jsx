@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Reveal from '../components/Reveal'
 import repairCareLogo from '/src/assets/repaircare.svg'
 import TrustATraderLogo from '/src/assets/TrustATrader.svg'
 
@@ -34,6 +35,7 @@ export default function About() {
 
       {/* ── Company Story ── */}
       <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-28">
+        <Reveal>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
 
           {/* Main copy */}
@@ -81,6 +83,7 @@ export default function About() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       {/* ── Promise & Memberships ── */}
@@ -89,6 +92,7 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
 
             {/* Our Promise */}
+            <Reveal>
             <div>
               <p className="section-label mb-5">Our Promise</p>
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-ink mb-6 leading-tight">
@@ -111,8 +115,10 @@ export default function About() {
                 ))}
               </ul>
             </div>
+            </Reveal>
 
             {/* Memberships */}
+            <Reveal delay={0.15}>
             <div>
               <p className="section-label mb-5">Memberships</p>
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-ink mb-6 leading-tight">
@@ -189,6 +195,7 @@ export default function About() {
 
               </div>
             </div>
+            </Reveal>
           </div>
         </div>
       </section>

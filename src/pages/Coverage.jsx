@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Reveal from '../components/Reveal'
 
 const areas = [
   'Aley Green', 'Ampthill', 'Apsley End', 'Arlesey', 'Aspley Guise', 'Aspley Heath',
@@ -52,11 +53,9 @@ function groupByLetter(list) {
   }, {})
 }
 
-const regions = ['Bedfordshire', 'Hertfordshire', 'North London', 'West London', 'Middlesex']
 
 export default function Coverage() {
   const [query, setQuery] = useState('')
-  const [mapActive, setMapActive] = useState(false)
 
   useEffect(() => {
     document.title = 'Coverage Areas | B Joseph Decorators'
@@ -84,84 +83,8 @@ export default function Coverage() {
           </h1>
           <div className="copper-rule mt-5 mb-4 animate-fade-up anim-d2" />
           <p className="text-ink-mid max-w-xl animate-fade-up anim-d3">
-            We provide professional decorating services across Bedfordshire, Hertfordshire, North &amp; West London, and Middlesex. The list below covers our Bedfordshire locations — don't see your area? Get in touch, we very likely cover it.
+            We provide professional decorating services across Bedfordshire, Hertfordshire, North &amp; West London, and Middlesex. The list below covers our locations — don't see your area? Get in touch, we very likely cover it.
           </p>
-        </div>
-      </section>
-
-      {/* ── Map ── */}
-      <section className="border-b border-parchment-border bg-parchment">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
-
-          <div className="flex items-end gap-6 mb-8">
-            <div>
-              <p className="section-label mb-2">Service Map</p>
-              <h2 className="font-heading text-3xl font-semibold text-ink">Where We Operate</h2>
-            </div>
-            <div className="flex-1 h-px bg-parchment-border hidden md:block mb-1" />
-          </div>
-
-          {/* Map container */}
-          <div
-            className="relative border border-parchment-border overflow-hidden w-full"
-            style={{ aspectRatio: '16 / 7', minHeight: '280px' }}
-          >
-            {/* Click-to-activate overlay — prevents scroll-hijack on mobile */}
-            {!mapActive && (
-              <button
-                onClick={() => setMapActive(true)}
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 transition-opacity duration-300 group"
-                style={{ backgroundColor: 'rgba(244,239,230,0.72)', backdropFilter: 'blur(2px)' }}
-                aria-label="Activate map"
-              >
-                {/* Pin icon */}
-                <span
-                  className="flex items-center justify-center w-12 h-12 rounded-full border border-parchment-border bg-parchment group-hover:border-copper/50 transition-colors duration-200"
-                  style={{ boxShadow: '0 2px 12px rgba(30,27,22,0.08)' }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#C4622D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                    <circle cx="12" cy="9" r="2.5"/>
-                  </svg>
-                </span>
-                <span
-                  className="border border-parchment-border bg-parchment px-5 py-2.5 group-hover:border-copper/40 transition-colors duration-200"
-                  style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif', color: '#4A4438' }}
-                >
-                  Click to explore map
-                </span>
-              </button>
-            )}
-
-            <iframe
-              src="https://www.google.com/maps?q=Bedfordshire,+England,+UK&z=9&output=embed"
-              className="w-full h-full"
-              style={{ border: 0, display: 'block', pointerEvents: mapActive ? 'auto' : 'none' }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="B Joseph Decorators service area map"
-            />
-          </div>
-
-          {/* Region badges */}
-          <div className="mt-4 flex flex-wrap gap-2 items-center">
-            <span
-              className="text-slate mr-2"
-              style={{ fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
-            >
-              Regions:
-            </span>
-            {regions.map(region => (
-              <span
-                key={region}
-                className="px-3 py-1.5 border border-parchment-border text-ink-mid"
-                style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'Jost, sans-serif' }}
-              >
-                {region}
-              </span>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -169,10 +92,11 @@ export default function Coverage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24">
 
         {/* Header row */}
+        <Reveal>
         <div className="flex flex-col sm:flex-row sm:items-end gap-6 mb-12">
           <div>
             <p className="section-label mb-2">Areas We Cover</p>
-            <p className="text-slate text-sm">{areas.length} Bedfordshire locations listed</p>
+            <p className="text-slate text-sm">{areas.length} locations listed</p>
           </div>
           <div className="sm:ml-auto relative w-full sm:max-w-xs">
             <input
@@ -194,6 +118,7 @@ export default function Coverage() {
             )}
           </div>
         </div>
+        </Reveal>
 
         {filtered.length === 0 && (
           <p className="text-slate text-sm mb-8">No areas found for "{query}".</p>
@@ -201,6 +126,7 @@ export default function Coverage() {
 
         {/* Search results: flat grid */}
         {query.trim() && filtered.length > 0 && (
+          <Reveal>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5">
             {filtered.map((area) => (
               <div
@@ -212,13 +138,15 @@ export default function Coverage() {
               </div>
             ))}
           </div>
+          </Reveal>
         )}
 
         {/* Grouped A–Z */}
         {!query.trim() && (
           <div className="space-y-10">
             {letters.map((letter) => (
-              <div key={letter}>
+              <Reveal key={letter}>
+              <div>
                 <div className="flex items-center gap-4 mb-4">
                   <span
                     className="font-heading font-semibold leading-none"
@@ -240,11 +168,13 @@ export default function Coverage() {
                   ))}
                 </div>
               </div>
+              </Reveal>
             ))}
           </div>
         )}
 
         {/* CTA */}
+        <Reveal delay={0.1}>
         <div className="mt-16 border border-parchment-border p-10 max-w-md mx-auto text-center">
           <p className="section-label mb-3">Not on the list?</p>
           <p className="text-ink-mid text-sm mb-7 leading-relaxed">
@@ -252,6 +182,7 @@ export default function Coverage() {
           </p>
           <Link to="/contact" className="btn-primary">Get in Touch</Link>
         </div>
+        </Reveal>
       </section>
     </>
   )
