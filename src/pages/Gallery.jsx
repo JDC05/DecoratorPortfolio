@@ -174,7 +174,6 @@ export default function Gallery() {
   const baPrev = useCallback(() => setBaLightbox(s => ({ ...s, index: s.index > 0 ? s.index - 1 : s.project.images.length - 1 })), [])
   const baNext = useCallback(() => setBaLightbox(s => ({ ...s, index: s.index < s.project.images.length - 1 ? s.index + 1 : 0 })), [])
 
-  // Bug 1: scroll lock while any lightbox is open
   useEffect(() => {
     if (lightbox !== null || baLightbox !== null) {
       document.body.style.overflow = 'hidden'
@@ -290,8 +289,12 @@ export default function Gallery() {
             aria-label="Close"
           >×</button>
           <button
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
-            style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200
+              w-11 h-11 md:w-auto md:h-auto
+              text-parchment md:text-parchment/50
+              hover:text-copper md:hover:text-copper
+              active:scale-95"
+            style={{ fontSize: '2.5rem', fontWeight: 400, lineHeight: 1, textShadow: '0 1px 6px rgba(0,0,0,0.8)' }}
             onClick={e => { e.stopPropagation(); prev() }}
             aria-label="Previous"
           >‹</button>
@@ -320,8 +323,12 @@ export default function Gallery() {
             </p>
           </div>
           <button
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
-            style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200
+              w-11 h-11 md:w-auto md:h-auto
+              text-parchment md:text-parchment/50
+              hover:text-copper md:hover:text-copper
+              active:scale-95"
+            style={{ fontSize: '2.5rem', fontWeight: 400, lineHeight: 1, textShadow: '0 1px 6px rgba(0,0,0,0.8)' }}
             onClick={e => { e.stopPropagation(); next() }}
             aria-label="Next"
           >›</button>
@@ -347,8 +354,12 @@ export default function Gallery() {
               aria-label="Close"
             >×</button>
             <button
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
-              style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200
+                w-11 h-11 md:w-auto md:h-auto
+                text-parchment md:text-parchment/50
+                hover:text-copper md:hover:text-copper
+                active:scale-95"
+              style={{ fontSize: '2.5rem', fontWeight: 400, lineHeight: 1, textShadow: '0 1px 6px rgba(0,0,0,0.8)' }}
               onClick={e => { e.stopPropagation(); baPrev() }}
               aria-label="Previous"
             >‹</button>
@@ -367,8 +378,12 @@ export default function Gallery() {
               </p>
             </div>
             <button
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-parchment/50 hover:text-copper transition-colors px-2 z-10"
-              style={{ fontSize: '3rem', fontWeight: 300, lineHeight: 1 }}
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-all duration-200
+                w-11 h-11 md:w-auto md:h-auto
+                text-parchment md:text-parchment/50
+                hover:text-copper md:hover:text-copper
+                active:scale-95"
+              style={{ fontSize: '2.5rem', fontWeight: 400, lineHeight: 1, textShadow: '0 1px 6px rgba(0,0,0,0.8)' }}
               onClick={e => { e.stopPropagation(); baNext() }}
               aria-label="Next"
             >›</button>
