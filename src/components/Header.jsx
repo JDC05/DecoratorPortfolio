@@ -41,7 +41,7 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center shrink-0">
-            <img src={bjosephbanner} alt="B.Joseph Decorators" className="h-12 w-auto" />
+            <img src={bjosephbanner} alt="B.Joseph Decorators" className="h-12 w-auto" width="240" height="48" fetchpriority="high" decoding="sync" />
           </Link>
 
           {/* Desktop nav */}

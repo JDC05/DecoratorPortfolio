@@ -72,6 +72,10 @@ function GalleryImage({ item, index, onClick }) {
           src={item.src}
           alt={item.caption}
           onLoad={() => setLoaded(true)}
+          loading="lazy"
+          decoding="async"
+          width="400"
+          height="300"
           className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         />
       )}
@@ -105,6 +109,10 @@ function BeforeAfterProject({ project, onImageClick }) {
                 <img
                   src={img.src}
                   alt={label || 'Photo'}
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="300"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/8 transition-colors duration-300" />
@@ -312,6 +320,7 @@ export default function Gallery() {
                 key={filtered[lightbox].src}
                 src={filtered[lightbox].src}
                 alt={filtered[lightbox].caption}
+                decoding="async"
                 className="max-h-[80vh] max-w-full object-contain animate-fade-in"
               />
             )}
@@ -368,6 +377,7 @@ export default function Gallery() {
                 key={img.src}
                 src={img.src}
                 alt={label || 'Photo'}
+                decoding="async"
                 className="max-h-[80vh] max-w-full object-contain animate-fade-in"
               />
               <p
